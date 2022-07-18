@@ -63,12 +63,12 @@
                                     </div>
                                     </div>
                                     @endforeach
-@endif
+                                    @endif
                                     </div>
                                 </div>
                             </div>
                             @endforeach
-@endif
+                            @endif
                             <div class="form-group ">
                                 <div class="col-sm-12 text-right">
                                
