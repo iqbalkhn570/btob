@@ -55,6 +55,7 @@ class LoginSuccessful
     $ip = request()->ip();
     $data = \Location::get($ip);
 if($data!=""){
+  if (!empty(auth()->user()->id)) {
   DB::table('activity_logs')->insert([
     'uid'    => auth()->user()->id,
     'source'   =>$result,
@@ -75,7 +76,7 @@ if($data!=""){
     'ip'       => $data->ip,
     'created_at'       => date('Y-m-d H:i:s')
 ]);
-}
+}}
     
     }
 }
