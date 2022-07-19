@@ -504,7 +504,7 @@ return [
     'Game' => 'Game',
     'Manage Business' => 'Manage Business',
     'Business' => 'Business',
-    'USD' => 'USD',
+    'must have minimum 8 characters' => 'must have minimum 8 characters',
     'USD' => 'USD',
     'USD' => 'USD',
     'USD' => 'USD',

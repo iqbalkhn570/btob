@@ -83,13 +83,17 @@ Auth::routes();
 
 
 Route::get('sitemap.xml', [SitemapController::class, 'index']);
-
+Route::get('admin/logout', function(){
+    Auth::logout();
+    return Redirect::to('admin/login');
+ });
 Route::group(['prefix' => RouteServiceProvider::ADMIN_URL_SUFFIX], function () {
     Route::get('/', function () {
         return redirect('admin/login');
     });
     Route::get('google-registration', [LoginController::class, 'googleRegistration'])->name('google.registration');
     Route::get('complete-registration', [LoginController::class, 'completeRegistration'])->name('complete.registration');
+    
 
     Route::group(['middleware' => 'auth'], function () {
         Route::group(['middleware' => 'checkstatus'], function () {

@@ -145,7 +145,7 @@
                             
                             <div class=" row">
                                 <div class="col-sm-12 form-group">
-                                    <label class=" control-label"> {{ __('messages.Password') }} * [{{ __('messages.must have minimum 8 characters(atleast 1 special character, 1 Numeric') }})] <i class="far fa-eye" id="togglePassword"></i></label>
+                                    <label class=" control-label"> {{ __('messages.Password') }} * [{{ __('messages.must have minimum 8 characters') }})] <i class="far fa-eye" id="togglePassword"></i></label>
                                     <input maxlength="30" minlength="3" autocomplete="off" type="password" class="form-control" name="password" id="id_password"   />
                                 </div>
                             </div>

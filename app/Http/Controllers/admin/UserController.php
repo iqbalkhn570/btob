@@ -125,6 +125,7 @@ class UserController extends Controller
                 [
                     'email.alpha_dash' => 'The User ID must only contain letters, numbers, dashes and underscores',
                     'email.unique' => 'The User ID already exists',
+                    'email.required' => 'The UserID field is required',
                 ]);
 
             if (!$validatedData->fails()) {
@@ -237,6 +238,7 @@ class UserController extends Controller
                     [
                         'email.alpha_dash' => 'The User ID must only contain letters, numbers, dashes and underscores',
                         'email.unique' => 'The User ID already exists',
+                        'email.required' => 'The UserID field is required',
                     ]);
             } else {
                 $validatedData = Validator::make($request->all(), [
