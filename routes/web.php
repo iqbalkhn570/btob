@@ -214,6 +214,8 @@ Route::middleware(['2fa'])->group(function () {
             Route::get('switchoffon', [SwitchoffonController::class, 'create'])->name('switchoffon');
             Route::POST('switchoffon', [SwitchoffonController::class, 'store'])->name('switchoffon');
 
+            Route::POST('changestatus', [SwitchoffonController::class, 'changestatus'])->name('changestatus');
+
             Route::get('/test', [TestController::class, 'index'])->name('test');
             Route::get('/test/add', [TestController::class, 'create'])->name('test_add');
             Route::POST('/test/add', [TestController::class, 'store'])->name('test_add');

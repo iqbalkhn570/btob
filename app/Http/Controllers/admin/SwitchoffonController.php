@@ -52,6 +52,16 @@ class SwitchoffonController extends Controller
         $brand = $brand->Where('status', '=', 'enabled');
         $brand = $brand->orderBy('name', 'ASC')->paginate(0);
       
+        $companyStatus = Company::Select('*')->Where('status', '=', 'enabled')->orderBy('name', 'ASC')->get();
+        $brandStatus = Brand::Select('*')->Where('status', '=', 'enabled')->orderBy('name', 'ASC')->get();
+        foreach($companyStatus as $companyVal){
+            foreach($brandStatus as $brandVal){
+                if(!DB::table('brand_company')->where('company_id',$companyVal->id)->where('brand_id',$brandVal->id)->exists()){
+                    $values = array('company_id' => $companyVal->id,'brand_id' => $brandVal->id);
+                    DB::table('brand_company')->insert($values);
+                }
+            } 
+        } 
         return view('admin.switchoffon')->with(array('setting' => $setting, 'company' => $company, 'brand' => $brand));
     }
 
@@ -328,5 +338,25 @@ class SwitchoffonController extends Controller
     public function destroy(Setting $setting)
     {
         //
+    }
+    public function changestatus(Request $request)
+    {
+        if($request->isMethod('post')) {
+            foreach($request->brand_company_id as $brand_company_id){
+                $branidname = "brand_id_".$brand_company_id;
+                if(isset($_POST[$branidname])){
+                    if($_POST[$branidname] == 'on'){
+                        $status = "enabled";
+                    }
+                }else{
+                    $status = "disabled";
+                }
+                $values = array('status' => $status);
+                DB::table('brand_company')->where('id',$brand_company_id)->update($values);
+            }
+        }
+        $request->session()->flash('message', 'Status has been Updated');
+        $request->session()->flash('alert-class', 'alert-success');
+        return redirect(route('switchoffon'));
     }
 }
