@@ -507,7 +507,7 @@ return [
     'must have minimum 8 characters' => 'Minimum 8 characters',
     'You are not active user' => 'You are not active user',
     'Update' => 'Update',
-    'USD' => 'USD',
+    'Your account is disabled' => 'Your account is disabled',
     'USD' => 'USD',
     'USD' => 'USD',
     'USD' => 'USD',

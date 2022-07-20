@@ -4,6 +4,8 @@
           <?php
           if (!empty(Auth::user()->role_id)) {
             $role_id = Auth::user()->role_id;
+          }else{
+            $role_id =0;
           }
                 
                 
