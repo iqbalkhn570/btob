@@ -354,9 +354,9 @@ class SwitchoffonController extends Controller
                 $values = array('status' => $status);
                 DB::table('brand_company')->where('id',$brand_company_id)->update($values);
             }
+            return 1;
+        }else{
+            return 0;
         }
-        $request->session()->flash('message', 'Status has been Updated');
-        $request->session()->flash('alert-class', 'alert-success');
-        return redirect(route('switchoffon'));
     }
 }

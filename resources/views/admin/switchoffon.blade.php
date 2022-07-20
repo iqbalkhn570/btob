@@ -23,6 +23,7 @@
             <div class="card-body">
                 <div class="tab-content" >
                     <div id="info" class="tab-pane active ">
+                        <span id="onsavealert"></span>
                         @if(Session::has('message'))
                             <p class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ __('messages.'.Session::get('message')) }}.</p>
                         @endif
@@ -36,37 +37,47 @@
                             </div>
                         @endif
                             <!-- form start -->
-                        <form action="{{route('changestatus')}}" method="post" id="setting_form" autocomplete="off" enctype="multipart/form-data">
+                        <form id="myForm" action="{{route('changestatus')}}" method="post" autocomplete="off" enctype="multipart/form-data">
                             @csrf
-                            @forelse ($company as $info)
-                                <div class="card card-secondary">
-                                    <div class="card-header">
-                                        <h3 class="card-title">{{$info->name}}</h3>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="form-group row">
-                                            @forelse ($brand as $brandinfo)
-                                                @php
-                                                    $brand_company = DB::table('brand_company')->where('company_id',$info->id)->where('brand_id',$brandinfo->id)->first();
-                                                @endphp
-                                                <div class="col-md-4 pt-3">
-                                                    <label for="brand_company_status-{{ $brand_company->id }}" class=" control-label">{{$brandinfo->name}}</label>
-                                                </div>
-                                                <div class="col-md-6 pt-3">
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                        </div>
-                                                        <input type="hidden" value="{{ $brand_company->id }}" name="brand_company_id[]">
-                                                        <input name="brand_id_{{$brand_company->id}}" type="checkbox"  @if(DB::table('brand_company')->where('company_id',$info->id)->where('brand_id',$brandinfo->id)->where('status','enabled')->exists()) checked  @endif data-bootstrap-switch data-off-color="danger" data-on-color="success" id="brand_company_status-{{ $brand_company->id }}">
+                            @php $x = 1; @endphp
+                                @forelse ($company as $info)
+                                    <div class="card card-secondary @if ($x != 1) collapsed-card @endif">
+                                        <div class="card-header border-0 ui-sortable-handle" style="cursor: move;">
+                                            <h3 class="card-title">
+                                                {{$info->name}}
+                                            </h3>
+                                            <div class="card-tools">
+                                            <button type="button" class="btn btn-primary btn-sm" data-card-widget="collapse" title="Collapse">
+                                                @if ($x != 1) <i class="fas fa-plus"></i> @else <i class="fas fa-minus"></i> @endif
+                                            </button>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="form-group row">
+                                                @forelse ($brand as $brandinfo)
+                                                    @php
+                                                        $brand_company = DB::table('brand_company')->where('company_id',$info->id)->where('brand_id',$brandinfo->id)->first();
+                                                    @endphp
+                                                    <div class="col-md-4 pt-3">
+                                                        <label for="brand_company_status-{{ $brand_company->id }}" class=" control-label">{{$brandinfo->name}}</label>
                                                     </div>
-                                                </div>
-                                            @empty
-                                                
-                                            @endforelse
+                                                    <div class="col-md-6 pt-3">
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                            </div>
+                                                            <input type="hidden" value="{{ $brand_company->id }}" name="brand_company_id[]">
+                                                            <input name="brand_id_{{$brand_company->id}}" type="checkbox"  @if(DB::table('brand_company')->where('company_id',$info->id)->where('brand_id',$brandinfo->id)->where('status','enabled')->exists()) checked  @endif data-bootstrap-switch data-off-color="danger" data-on-color="success" id="brand_company_status-{{ $brand_company->id }}">
+                                                        </div>
+                                                    </div>
+                                                @empty
+                                                    
+                                                @endforelse
+                                            </div>
                                         </div>
                                     </div>
-                                    <!-- /.card-body -->
-                                </div>
+                                @php
+                                    $x++;
+                                @endphp
                             @empty
                                 
                             @endforelse
@@ -84,6 +95,29 @@
 
 @section('script')
 <script>
+    $(document).ready(function(){
+        $('#myForm').on('submit', function(e){
+            e.preventDefault();
+            var datastring = $("#myForm").serialize();
+            $.ajax({
+                type: "POST",
+                url: '{{route('changestatus')}}',
+                data: datastring,
+                dataType: "json",
+                success: function(data) {
+                    if(data == 1){
+                        $('#onsavealert').html('<p class="alert alert-success">{{ __("Status has been Updated.") }}.</p>');
+                    }
+                    if(data == 0){
+                        $('#onsavealert').html('<p class="alert alert-danger">{{ __("Something Went Wrong.") }}.</p>');
+                    }
+                },
+                error: function() {
+                    alert('error handling here');
+                }
+            });
+        });
+    });
     $(function () {
         jQuery.validator.addMethod("ziprangeCA", function(value, element) {
             return this.optional(element) || /[a-zA-Z][0-9][a-zA-Z](-| |)[0-9][a-zA-Z][0-9]/.test(value);
