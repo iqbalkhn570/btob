@@ -111,6 +111,7 @@
                     if(data == 0){
                         $('#onsavealert').html('<p class="alert alert-danger">{{ __("Something Went Wrong.") }}.</p>');
                     }
+                    window.scrollTo(0, 0);
                 },
                 error: function() {
                     alert('error handling here');
