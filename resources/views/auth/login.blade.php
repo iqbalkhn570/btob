@@ -30,7 +30,9 @@
     <div class="card">
         <div class="card-body login-card-body">
             <p class="login-box-msg">Sign in to start your session</p>
-
+            @if(Session::has('message'))
+                        <p class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ __('messages.'.Session::get('message')) }}.</p>
+            @endif
             <form method="post" action="{{ url('admin/login') }}" id="form_sub">
                 @csrf
 

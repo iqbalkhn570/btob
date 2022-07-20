@@ -46,11 +46,13 @@ class UserController extends Controller
         $user = User::Sortable()->Select('*');
         if ($request->search_term) {
             if (Auth::user()->role_id == 1) {
-                $user = $user->withTrashed()->Where('name', 'LIKE', "%{$request->search_term}%")->orWhere('email', 'LIKE', "%{$request->search_term}%");
+                //$user = $user->withTrashed()->Where('name', 'LIKE', "%{$request->search_term}%")->orWhere('email', 'LIKE', "%{$request->search_term}%");
+                //$this->search = "Yes";
+                $user = $user->whereNotIn('role_id', [1, 2])->Where('name', 'LIKE', "%{$request->search_term}%")->orWhere('email', 'LIKE', "%{$request->search_term}%");
                 $this->search = "Yes";
 
             } else {
-                $user = $user->Where('name', 'LIKE', "%{$request->search_term}%")->orWhere('email', 'LIKE', "%{$request->search_term}%");
+                $user = $user->whereNotIn('role_id', [1, 2])->Where('name', 'LIKE', "%{$request->search_term}%")->orWhere('email', 'LIKE', "%{$request->search_term}%");
                 $this->search = "Yes";
             }
 
@@ -119,7 +121,8 @@ class UserController extends Controller
                 'contact_number' => 'nullable|numeric',
                 'account_number' => 'nullable|numeric',
                 'email' => ['required', 'string', 'max:255', 'unique:users', 'alpha_dash'],
-                'password' => 'required|min:8|regex:/^(?=.*[a-z])(?=.*)(?=.*\d).+$/',
+                //'password' => 'required|min:8|regex:/^(?=.*[a-z])(?=.*)(?=.*\d).+$/',
+                'password' => 'required|min:8',
                 // 'image' => 'required_without_all:banner_content|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
             ],
                 [
@@ -231,7 +234,8 @@ class UserController extends Controller
                     'account_number' => 'nullable|numeric',
                     'email' => 'required|string|max:255|alpha_dash|unique:users,email,' . $request->user_id,
                     //'email' => ['required', 'string', 'max:255', 'unique:users', 'alpha_dash'],
-                    'password' => 'min:8|regex:/^(?=.*[a-z])(?=.*)(?=.*\d).+$/',
+                    //'password' => 'min:8|regex:/^(?=.*[a-z])(?=.*)(?=.*\d).+$/',
+                    'password' => 'required|min:8',
 
                     //'password' => 'required'
                 ],

@@ -17,6 +17,8 @@ class CheckStatus
         //If the status is not approved redirect to login 
         if(Auth::check() && Auth::user()->status != 'enabled'){
             Auth::logout();
+            $request->session()->flash('message', 'Your account is disabled');
+            $request->session()->flash('alert-class', 'alert-danger');
             return redirect('admin/login')->with('erro_login', 'Your no active user');
         }
         //if(!empty(Auth::user()->google2fa_secret == '')){

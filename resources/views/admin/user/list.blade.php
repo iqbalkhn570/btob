@@ -29,9 +29,9 @@
                 if ($search == "Yes") {
                     if (!empty($user[0]->id)) {
                 ?>
-                        <p class="alert alert-success">{{__('message.Record found')}}.</p> 
+                        <p class="alert alert-success">Record found.</p> 
                 <?php } else { ?>
-                        <p class="alert alert-warning">{{__('message.Record not found')}}.</p>
+                        <p class="alert alert-warning">Record not found.</p>
                 <?php }} ?>
 
                 @if(Session::has('message'))

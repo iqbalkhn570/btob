@@ -22,11 +22,11 @@
                     @else
                         {{ __('messages.Edit') }}
                     @endif
-                    {{ __('messages.Company') }}</h1>
+                    {{ __('messages.Admin') }}</h1>
             </div><!-- /.col -->
 
             <div class="col-sm-6 text-right">
-                <a href="{{ route('user') }}" class="btn btn-warning" ><i class="fa fa-angle-double-left" ></i> {{ __('messages.Back') }}</a>
+                <!--<a href="{{ route('user') }}" class="btn btn-warning" ><i class="fa fa-angle-double-left" ></i> {{ __('messages.Back') }}</a>-->
             </div>
             <!-- /.col -->
         </div><!-- /.row -->
@@ -63,7 +63,7 @@
                                 <div class="col-sm-12 form-group">
                                     <label class=" control-label">  {{ __('messages.Role') }}*</label>
                                     <select autofocus name="role" id="role" class="form-control" value="{{old('role',$user->role) }}">
-                                        <option value="">Select {{ __('messages.Role') }}</option>
+                                        <!--<option value="">Select {{ __('messages.Role') }}</option>-->
                                         @foreach ($role as $rl)
                                         <option  @if($rl['id'] == old('role',$user->role_id))selected="selected" @endif value="{{$rl['id']}}">{{$rl['name']}}</option>
                                         @endforeach
@@ -173,7 +173,12 @@
                                 <div class="col-sm-12 form-group text-right">
                                     <a href="{{ route('user') }}" class="btn btn-warning" ><i class="fa fa-angle-double-left" ></i> {{ __('messages.Back') }}</a>          
                                     <a href="#" onclick="document.getElementById('user_add').reset(); document.getElementById('user_add').value = null; return false;" class="btn btn-secondary">{{ __('messages.Reset') }}</a>
+                                    
+                                    @if($user->id=="")
                                     <input type="submit" class="btn btn-primary" name="submit" value="{{ __('messages.Submit') }}" />
+                    @else
+                    <input type="submit" class="btn btn-primary" name="submit" value="{{ __('messages.Update') }}" />
+                    @endif
                                 </div>
                             </div>
 

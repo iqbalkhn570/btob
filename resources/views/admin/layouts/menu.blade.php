@@ -2,7 +2,11 @@
                with font-awesome or any other icon font library -->
 
           <?php
-                $role_id = Auth::user()->role_id;
+          if (!empty(Auth::user()->role_id)) {
+            $role_id = Auth::user()->role_id;
+          }
+                
+                
                 $roles = DB::select('SELECT * FROM roles WHERE id =' . $role_id);
                 $permission_menu = @$roles[0]->permission_menu;
                 if ($permission_menu == "") {
