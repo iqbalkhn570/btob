@@ -66,7 +66,16 @@
                                                             <div class="input-group-prepend">
                                                             </div>
                                                             <input type="hidden" value="{{ $brand_company->id }}" name="brand_company_id[]">
-                                                            <input name="brand_id_{{$brand_company->id}}" type="checkbox"  @if(DB::table('brand_company')->where('company_id',$info->id)->where('brand_id',$brandinfo->id)->where('status','enabled')->exists()) checked  @endif data-bootstrap-switch data-off-color="danger" data-on-color="success" id="brand_company_status-{{ $brand_company->id }}">
+
+
+                                                            <div class="icheck-success d-inline">
+                                                                <input class="disableSave" name="brand_id_{{$brand_company->id}}" type="checkbox"  @if(DB::table('brand_company')->where('company_id',$info->id)->where('brand_id',$brandinfo->id)->where('status','enabled')->exists()) checked  @endif  id="brand_company_status-{{ $brand_company->id }}" >
+                                                                <label for="brand_company_status-{{ $brand_company->id }}">
+                                                                </label>
+                                                            </div>
+
+
+                                                            
                                                         </div>
                                                     </div>
                                                 @empty
@@ -82,7 +91,7 @@
                                 
                             @endforelse
                             <div class="card-footer">
-                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <button disabled type="submit" class="btn btn-primary">Submit</button>
                             </div>
                         </form>
                     </div> <!-- info -->
@@ -95,13 +104,17 @@
 
 @section('script')
 <script>
+    $('.disableSave').click(function(e) {
+        $("#myForm").find(':input[type=submit]').prop('disabled', false);
+    });
     $(document).ready(function(){
+
         $('#myForm').on('submit', function(e){
             e.preventDefault();
             var datastring = $("#myForm").serialize();
             $.ajax({
                 type: "POST",
-                url: '{{route('changestatus')}}',
+                url: "{{route('changestatus')}}",
                 data: datastring,
                 dataType: "json",
                 success: function(data) {
@@ -112,6 +125,7 @@
                         $('#onsavealert').html('<p class="alert alert-danger">{{ __("Something Went Wrong.") }}.</p>');
                     }
                     window.scrollTo(0, 0);
+                    $("#myForm").find(':input[type=submit]').prop('disabled', true);
                 },
                 error: function() {
                     alert('error handling here');
@@ -179,5 +193,7 @@
             }
         });
     });
+    
+    $("#myForm").find(':input[type=submit]').prop('disabled', true);
 </script>
 @endsection
