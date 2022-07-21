@@ -6,7 +6,7 @@
       position: relative;
       margin-top: -0.05em;
       width: 4.6rem;
-      height: 2.5rem;
+      height: 2rem;
       outline: none;
       border: none;
       border-radius: 0.3rem;
@@ -23,7 +23,7 @@
       top: 0.2rem;
       right: 0.2rem;
       width: 2.1rem;
-      height: 2.1rem;
+      height: 1.6rem;
       border-radius: 0.2rem;
       background: #fff no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 15 15'%3E%3Cpolygon fill='%2324A148' points='12.756 3.162 6.049 9.869 2.38 6.964 1.003 8.706 5.447 12.224 6.223 12.838 14.33 4.73'/%3E%3C/svg%3E%0A");
       
