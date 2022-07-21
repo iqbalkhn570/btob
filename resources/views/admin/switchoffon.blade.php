@@ -1,7 +1,48 @@
 @extends('admin.layouts.app')
 
 @section('content')
+<style>
+    .switchSushul[type=checkbox] {
+      position: relative;
+      margin-top: -0.05em;
+      width: 4.6rem;
+      height: 2rem;
+      outline: none;
+      border: none;
+      border-radius: 0.3rem;
+      background-color: #bfccd9;
+      cursor: pointer;
+      transition: 0.2s;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      background-color: red;
+    }
+    .switchSushul[type=checkbox]::after {
+      position: absolute;
+      top: 0.2rem;
+      right: 0.2rem;
+      width: 2.1rem;
+      height: 1.6rem;
+      border-radius: 0.2rem;
+      background: #fff no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 15 15'%3E%3Cpolygon fill='%2324A148' points='12.756 3.162 6.049 9.869 2.38 6.964 1.003 8.706 5.447 12.224 6.223 12.838 14.33 4.73'/%3E%3C/svg%3E%0A");
+      
+      background-position: center;
+      background-size: 0;
+      content: "";
+      transition: 0.1s transform, 0.2s background cubic-bezier(0.78, 0.96, 0.49, 2.29);
+      transform: translateX(-2.1rem);
+    }
+    .switchSushul[type=checkbox]:checked {
+      background-color: #24a148;
+    }
 
+    .switchSushul[type=checkbox]:checked::after {
+      background-size: 1.5rem;
+      transform: translateY(0);
+    }
+
+</style>
 <!-- Content Header (Page header) -->
 <div class="content-header">
     <div class="container-fluid">
@@ -66,7 +107,12 @@
                                                             <div class="input-group-prepend">
                                                             </div>
                                                             <input type="hidden" value="{{ $brand_company->id }}" name="brand_company_id[]">
-                                                            <input name="brand_id_{{$brand_company->id}}" type="checkbox"  @if(DB::table('brand_company')->where('company_id',$info->id)->where('brand_id',$brandinfo->id)->where('status','enabled')->exists()) checked  @endif data-bootstrap-switch data-off-color="danger" data-on-color="success" id="brand_company_status-{{ $brand_company->id }}">
+
+                                                            {{-- <input name="brand_id_{{$brand_company->id}}" type="checkbox"  @if(DB::table('brand_company')->where('company_id',$info->id)->where('brand_id',$brandinfo->id)->where('status','enabled')->exists()) checked  @endif data-bootstrap-switch data-off-color="danger" data-on-color="success" id="brand_company_status-{{ $brand_company->id }}"> --}}
+
+                                                            <input name="brand_id_{{$brand_company->id}}" type="checkbox" class="switchSushul disableSave" @if(DB::table('brand_company')->where('company_id',$info->id)->where('brand_id',$brandinfo->id)->where('status','enabled')->exists()) checked  @endif  id="brand_company_status-{{ $brand_company->id }}">
+
+
                                                         </div>
                                                     </div>
                                                 @empty
@@ -82,7 +128,7 @@
                                 
                             @endforelse
                             <div class="card-footer">
-                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <button disabled type="submit" class="btn btn-primary">Submit</button>
                             </div>
                         </form>
                     </div> <!-- info -->
@@ -95,8 +141,12 @@
 
 @section('script')
 <script>
+    $('.disableSave').click(function(e) {
+        $("#myForm").find(':input[type=submit]').prop('disabled', false);
+    });
     $(document).ready(function(){
         $('#myForm').on('submit', function(e){
+            // $(this).find(':input[type=submit]').prop('disabled', true);
             e.preventDefault();
             var datastring = $("#myForm").serialize();
             $.ajax({
@@ -112,6 +162,7 @@
                         $('#onsavealert').html('<p class="alert alert-danger">{{ __("Something Went Wrong.") }}.</p>');
                     }
                     window.scrollTo(0, 0);
+                    $("#myForm").find(':input[type=submit]').prop('disabled', true);
                 },
                 error: function() {
                     alert('error handling here');
