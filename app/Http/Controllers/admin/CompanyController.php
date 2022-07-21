@@ -36,8 +36,11 @@ class CompanyController extends Controller
     public function index(Request $request)
     {   
         $query = Company::Sortable()->Select('*');
-        if( $request->search_term) {
-            $query = $query->Where('name','LIKE', "%{$request->search_term}%");
+        if( $request->search_term && ($request->search_term!="%" && $request->search_term!="_" && $request->search_term!="_%" && $request->search_term!="%_")) {
+            //echo $search=preg_replace('/%_*/', '', $request->search_term);
+            $search=str_replace('%', '', $request->search_term);
+            $search=str_replace('_', '', $search);
+            $query = $query->Where('name','LIKE', "%{$search}%");
             $this->search="Yes";
         }
 		//$query = $query->Where('status','enabled');
@@ -67,7 +70,13 @@ class CompanyController extends Controller
         
         if($request->isMethod('post')) {
             $validatedData = Validator::make($request->all(),[
-                'name' => 'required|max:255|unique:companies,name',
+               //'name' => 'required|max:255|alpha_num|unique:companies,name',
+              // 'email' => 'required|regex:/(.+)@(.+)\.(.+)/i'
+              // 'name' => ['required', 'max:255','alpha',"regex:/^([^\!'\*\\]*)$/"],
+              'name' => ['required','max:200','regex:/^[^(\|\]~`!%^&*=_};:?><’)]*$/'],
+
+                //'name' => 'required|regex:[a-zA-Z0-9.,'"]+$/u|min:3|max:30',
+                //'name' => 'required|regex:/^[\pL\s]+$/u|min:3|max:30',
             ]);
 
             if (!$validatedData->fails())
