@@ -58,11 +58,13 @@
                       <div class=" row">
                         <div class="col-sm-12 form-group text-right">
                                                     <a href="{{ route($search_action) }}" class="btn btn-warning" ><i class="fa fa-angle-double-left" ></i> {{ __('messages.Back') }}</a>          
-                                                    <a href="#" onclick="document.getElementById('form_add').reset(); document.getElementById('form_add').value = null; return false;" class="btn btn-secondary reset">{{ __('messages.Reset') }}</a>
+                                                   
                         
                           @if($data->id=="")
+                          <a href="#" onclick="document.getElementById('form_add').reset(); document.getElementById('form_add').value = null; return false;" class="btn btn-secondary reset">{{ __('messages.Reset') }}</a>
                                     <input type="submit" class="btn btn-primary" name="submit" value="{{ __('messages.Submit') }}" />
                     @else
+                    <a href="#" onclick="document.getElementById('form_add').reset(); document.getElementById('form_add').value = null; return false;" class="btn btn-secondary">{{ __('messages.Reset') }}</a>
                     <input type="submit" class="btn btn-primary" name="submit" value="{{ __('messages.Update') }}" />
                     @endif
                         </div>

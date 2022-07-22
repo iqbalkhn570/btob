@@ -21,4 +21,13 @@ class Brand extends Model
     protected $fillable = [
         'name'
     ];
+    public function getBrandImage(){
+      
+        if( !empty($this->image)  && file_exists(public_path('/frontend/images/brand/'.$this->image) ) ){
+            return asset('/public/frontend/images/brand/'.$this->image);
+        }else{
+            return false;
+        }
+    }
+
 }

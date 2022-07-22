@@ -44,7 +44,7 @@ class BrandController extends Controller
     public function index(Request $request)
     {   
         $query = Brand::Sortable()->Select('*');
-        if ($request->search_term) {
+        if( $request->search_term && ($request->search_term!="%" && $request->search_term!="_" && $request->search_term!="_%" && $request->search_term!="%_")) {
         if(Auth::user()->role_id==1 || Auth::user()->role_id==2){
             $query = $query->withTrashed()->Where('name', 'LIKE', "%{$request->search_term}%");
         $this->search = "Yes";
@@ -80,12 +80,22 @@ class BrandController extends Controller
     {
         if($request->isMethod('post')) {
             $validatedData = Validator::make($request->all(),[
-                'name' => 'bail|required|unique:brands,name|max:255|min:1',
+                //'name' => 'bail|required|unique:brands,name|max:255|min:1',
+                'name' => ['required','unique:brands,name','max:200','regex:/^[^(\|\]~`!%^&*=_};:?><’)]*$/'],
+                'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:1024',
             ]);
             if (!$validatedData->fails())
             {
+                $image_name = '';
+                if ($request->hasFile('image')) {
+                    $image = $request->file('image');
+                    $image_name = time() . '.' . $image->getClientOriginalExtension();
+                    $destinationPath = public_path('frontend/images/brand');
+                    $image->move($destinationPath, $image_name);
+                }
                 $data = new brand;
                 $data->name = $request->name;
+                $data->image = $image_name;
                 $data->slug = Str::slug($request->name,'-');
                 $data->created_by = Auth::user()->id;
                 if($data->save()){
@@ -124,6 +134,7 @@ class BrandController extends Controller
         if($request->isMethod('post')) {
             $validatedData = Validator::make($request->all(),[
                 'name' => 'required|max:255|unique:brands,name,' . $request->id,
+                'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:1024',
             ]);
 
             if (!$validatedData->fails() )
@@ -132,6 +143,14 @@ class BrandController extends Controller
                 $data->name = $request->name;
                 $data->slug = Str::slug($request->name,'-');
                 $data->updated_by = Auth::user()->id;
+                if($request->hasFile('image'))
+                {
+                    $image = $request->file('image');
+                    $image_name = time().'.'.$image->getClientOriginalExtension();
+                    $destinationPath = public_path('frontend/images/brand');
+                    $image->move($destinationPath, $image_name);
+                    $data->image = $image_name;
+                 }
 				
                 if($data->save()){
                     $request->session()->flash('message', $this->heading.' updated successfully');
