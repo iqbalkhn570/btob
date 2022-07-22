@@ -293,7 +293,9 @@ $(document).ready(function(){
             }
         }, false);
 });
-
+$(".reset").click(function() {
+    $(this).closest('form').find("input[type=text], textarea").val("");
+});
 </script>
 
 @stack('page_scripts')
