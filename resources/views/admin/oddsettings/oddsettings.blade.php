@@ -6,10 +6,19 @@
 <link rel="stylesheet" href="{{ asset('public/admin/plugins/toastr/toastr.min.css') }}">
 
 <link rel="stylesheet" href="{{ asset('public/admin/plugins/select2/css/select2.min.css') }}">
+
+
+<link rel="stylesheet" href="{{ asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+<link rel="stylesheet" href="{{ asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+<link rel="stylesheet" href="{{ asset('plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
 {{-- <link rel="stylesheet" href="{{ asset('public/admin/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}"> --}}
 <style>
     span.select2-selection.select2-selection--single {
         height: 40px;
+    }
+    input.form-control.form-control-sm {
+        margin-left: 484px;
+        width: 266px;
     }
 </style>
 <!-- Content Header (Page header) -->
@@ -79,7 +88,7 @@
                                 <a class="nav-link" id="custom-content-above-profile-tab" data-toggle="pill" href="#custom-content-above-profile" role="tab" aria-controls="custom-content-above-profile" aria-selected="false">Commission Drop & Limit Settings</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link @if(isset($_GET['work'])) @if($_GET['work'] == 'populer') active @endif  @endif" id="custom-content-above-profile2-tab" data-toggle="pill" href="#custom-content-above-profile2" role="tab" aria-controls="custom-content-above-profile2" aria-selected="false">Populer Number Settings</a>
+                                <a class="nav-link @if(isset($_GET['work'])) @if($_GET['work'] == 'populer') active @endif  @endif" id="custom-content-above-profile2-tab" data-toggle="pill" href="#custom-content-above-profile2" role="tab" aria-controls="custom-content-above-profile2" aria-selected="false">Popular Number Settings</a>
                             </li>
                         </ul>
                         <div class="tab-content" id="custom-content-above-tabContent">
@@ -313,7 +322,7 @@
                                             <div id="divTxt">
                                                 <div class="row">
                                                     <div class="form-group col-md-3 mb-2">
-                                                        <b>Populer Number</b>
+                                                        <b>Popular Number</b>
                                                       </div>
                                                       <div class="form-group col-md-3 mb-2">
                                                         <b>Entity</b>
@@ -324,7 +333,7 @@
                                                 </div>
                                                 <div class="row" id="allMainData">
                                                     <div class="form-group col-md-3">
-                                                        <input required type="text" name="populer_number0" class="form-control" id="PopulerNumber" placeholder="Populer Number">
+                                                        <input required type="text" name="populer_number0" class="form-control" id="PopulerNumber" placeholder="Popular Number">
                                                       </div>
                                                       <div class="form-group col-md-3">
                                                         <div class="form-group">
@@ -356,19 +365,24 @@
                                         </div>
                                     </form>
 
-                                    <div class="card-body">
-                                        <table class="table table-bordered">
+
+
+                                    <div class="card">
+                                        {{-- <div class="card-header">
+                                          <h3 class="card-title">DataTable with default features</h3>
+                                        </div> --}}
+                                        <!-- /.card-header -->
+                                        <div class="card-body">
+                                          <table id="example1" class="table table-bordered table-striped">
                                             <thead>
                                                 <tr>
                                                     <th class="text-center">Sr. No.</th>
-                                                    <th>Populer Number</th>
+                                                    <th>Popular Number</th>
                                                     <th>Entity</th>
                                                     <th>Game Plane</th>
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
-                                            
-
                                             <tbody>
                                                 @php
                                                     $sr = 1;
@@ -413,8 +427,30 @@
 
 
                                         </tbody>
-                                            </table>
+                                            <tfoot>
+                                                <tr>
+                                                    <th class="text-center">Sr. No.</th>
+                                                    <th>Popular Number</th>
+                                                    <th>Entity</th>
+                                                    <th>Game Plane</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </tfoot>
+                                          </table>
+                                        </div>
+                                        <!-- /.card-body -->
                                     </div>
+
+
+
+
+
+
+
+
+
+                                    
+                                      
                                 </div> <!-- info -->
 
 
@@ -435,10 +471,39 @@
 <script src="{{ asset('public/admin/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
 <!-- Toastr -->
 <script src="{{ asset('public/admin/plugins/toastr/toastr.min.js') }}"></script>
+
+
+<script src="{{ asset('public/admin/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('public/admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('public/admin/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+<script src="{{ asset('public/admin/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('public/admin/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
+<script src="{{ asset('public/admin/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('public/admin/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
+<script src="{{ asset('public/admin/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
+<script src="{{ asset('public/admin/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
+
+
 {{-- <script src="{{ asset('public/admin/plugins/select2/js/select2.full.min.js') }}"></script> --}}
 {{-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> --}}
 <script>
-    
+    // var $label = document.getElementsByTagName("INPUT")[2].closest("label");
+    // $label.replaceWith(document.getElementsByTagName("INPUT")[0]);
+//  $('#stats-table').DataTable({
+//      language: { search: '', searchPlaceholder: "Search..." },
+//  });
+$("#example1").dataTable({
+   "initComplete": function(){
+      $("#datatableit_filter").detach().appendTo('#newSearch');
+   },
+   "language": { 
+        "search": "" ,
+        searchPlaceholder: "Search Here"
+    },
+   "responsive": true, "lengthChange": false, "autoWidth": false,
+   
+}).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+
     function minmax(value, min, max) 
     {
         if(parseFloat(value) < min || isNaN(value)){
@@ -639,7 +704,7 @@
 
         var allData = $("#allMainData").html();
 
-        $("#divTxt").append( "<span style='margin-top: -20px;' class='row' id='row"+id+"'> <div class='form-group col-md-3'> <input required type='text' name='populer_number"+id+"' class='form-control' id='PopulerNumber' placeholder='Populer Number'> </div> <div class='form-group col-md-3'> <div class='form-group'> <input type='hidden' value='"+id+"' name='number_of[]'> <select name='entity"+id+"' onchange='getGameDetailsVal(this.value,"+id+");' class='form-control' style='width: 100%;' required> <option value=''>Please Select Entity</option> @forelse ($company as $info) <option value='{{$info->id}}'>{{$info->name}}</option> @empty @endforelse </select> </div> </div> <div class='form-group col-md-3'> <div class='form-group'> <select id='gamePlaneAppend"+id+"' name='game_plane"+id+"' class='form-control' style='width: 100%;' required> <option value=''>Please Select Game Plane</option> </select> </div> </div> </div> <div class='form-group col-md-3'><a href='#' class='btn btn-outline-danger' onClick='removeFormField("+id+"); return false;'><i class='fas fa-times'></i></a></span>" );
+        $("#divTxt").append( "<span style='margin-top: -20px;' class='row' id='row"+id+"'> <div class='form-group col-md-3'> <input required type='text' name='populer_number"+id+"' class='form-control' id='PopulerNumber' placeholder='Popular Number'> </div> <div class='form-group col-md-3'> <div class='form-group'> <input type='hidden' value='"+id+"' name='number_of[]'> <select name='entity"+id+"' onchange='getGameDetailsVal(this.value,"+id+");' class='form-control' style='width: 100%;' required> <option value=''>Please Select Entity</option> @forelse ($company as $info) <option value='{{$info->id}}'>{{$info->name}}</option> @empty @endforelse </select> </div> </div> <div class='form-group col-md-3'> <div class='form-group'> <select id='gamePlaneAppend"+id+"' name='game_plane"+id+"' class='form-control' style='width: 100%;' required> <option value=''>Please Select Game Plane</option> </select> </div> </div> </div> <div class='form-group col-md-3'><a href='#' class='btn btn-outline-danger' onClick='removeFormField("+id+"); return false;'><i class='fas fa-times'></i></a></span>" );
 
         id = id - 1 + 2;
         document.getElementById("id").value = id;
