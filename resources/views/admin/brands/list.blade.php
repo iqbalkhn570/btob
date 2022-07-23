@@ -74,6 +74,7 @@
 							<th>#</th>
 
                             <th>@sortablelink('name',__('messages.Title'))</th>
+                            <th>@sortablelink('name',__('messages.Image'))</th>
                             <th>@sortablelink('created_at', __('messages.Created Date'))</th>
                             <th>@sortablelink('updated_at', __('messages.Updated Date'))</th>
                             <!--<th>@sortablelink('created_at','Created Date')</th>-->
@@ -85,6 +86,10 @@
                         @foreach ($data as $key =>$info)
                             <tr>
 <td>{{ $data->firstItem() + $key  }}</td>                            <td>{{ $info->name }}</td>
+<td>@if($info->image && $info->getBrandImage() )
+                                    <img src="{{  $info->getBrandImage() }} " alt="image" class="img-fluid"
+                                        style="max-width:140px;max-height:40px;" />
+                                    @endif</td>
 <td>{{ $info->created_at }}</td>
                                 <td>{{ $info->updated_at }}</td>
                            <!-- <td>{{date('d-M  Y',strtotime($info->created_at))}}</td>-->
