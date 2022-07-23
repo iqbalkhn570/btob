@@ -156,10 +156,10 @@
                 dataType: "json",
                 success: function(data) {
                     if(data == 1){
-                        $('#onsavealert').html('<p class="alert alert-success">{{ __("Status has been Updated.") }}.</p>');
+                        $('#onsavealert').html('<p class="alert alert-success">{{ __("messages.Status has been Updated") }}.</p>');
                     }
                     if(data == 0){
-                        $('#onsavealert').html('<p class="alert alert-danger">{{ __("Something Went Wrong.") }}.</p>');
+                        $('#onsavealert').html('<p class="alert alert-danger">{{ __("messages.Something Went Wrong") }}.</p>');
                     }
                     window.scrollTo(0, 0);
                     $("#myForm").find(':input[type=submit]').prop('disabled', true);
