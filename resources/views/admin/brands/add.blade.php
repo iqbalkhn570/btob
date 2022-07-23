@@ -2,7 +2,7 @@
 @section('style')
 @endsection
 @section('content')
-
+{{-- This comment will not be present in the rendered HTML --}}
     <!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container-fluid">
