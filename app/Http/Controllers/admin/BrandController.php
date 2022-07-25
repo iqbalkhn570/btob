@@ -54,9 +54,11 @@ class BrandController extends Controller
             $this->search = "Yes";
         }
         }
+        
+        $data1 = new Brand;
 		//$query = $query->Where('status','enabled');
         $data = $query->orderBy('id', 'DESC')->paginate(DEFAULT_PAGINATION_LIMIT);
-        return view('admin.'.$this->folder.'.list')->with(array('data'=>$data,'search'=>$this->search,'heading'=>$this->heading,'add_action'=>$this->add_action,'edit_action'=>$this->edit_action,'show_action'=>$this->show_action,'delete_action'=>$this->delete_action,'status_action'=>$this->status_action,'search_action'=>$this->search_action));
+        return view('admin.'.$this->folder.'.list')->with(array('data1'=>$data1,'data'=>$data,'search'=>$this->search,'heading'=>$this->heading,'add_action'=>$this->add_action,'edit_action'=>$this->edit_action,'show_action'=>$this->show_action,'delete_action'=>$this->delete_action,'status_action'=>$this->status_action,'search_action'=>$this->search_action));
     }
 
     /**

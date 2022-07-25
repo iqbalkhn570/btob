@@ -57,29 +57,6 @@
                     @endif
                     <div class="card-body">
                         
-                    <div class="card-header">
-                    
-                        <h3 class="card-title"></h3>
-
-                        <div class="card-tools">
-                        <form action="{{ route($search_action) }}" method="get">
-                        <div class="input-group input-group-sm" style="width: 250px;">
-                       
-                            <input type="text" name="search_term" class="form-control float-right" placeholder="{{ __('messages.Search') }}" value="{{ app('request')->input('search_term') }}">
-
-                            <div class="input-group-append">
-                            <button type="submit" class="btn btn-default" title="{{ __('messages.Search') }}">
-                                <i class="fas fa-search"></i>
-                            </button>
-                            <a href="{{ route($search_action) }}" class="btn btn-warning" title="{{ __('messages.Reset') }}">
-                                <i class="fas fa-sync-alt"></i>
-                            </a>
-                            </div>
-                        
-                        </div>
-                        </form>
-                        </div>
-                    </div>
                         <ul class="nav nav-tabs" id="custom-content-above-tab" role="tablist">
                             <li class="nav-item">
                                 <a class="nav-link @if(isset($_GET['work'])) @if($_GET['work'] != 'populer') active @endif @else active @endif" id="custom-content-above-home-tab" data-toggle="pill" href="#custom-content-above-home" role="tab" aria-controls="custom-content-above-home" aria-selected="true">Rates Settings</a>
@@ -93,6 +70,29 @@
                         </ul>
                         <div class="tab-content" id="custom-content-above-tabContent">
                             <div class="tab-pane fade @if(isset($_GET['work'])) @if($_GET['work'] != 'populer') active show @endif @else active show @endif" id="custom-content-above-home" role="tabpanel" aria-labelledby="custom-content-above-home-tab">
+                                <div class="card-header">
+                    
+                                    <h3 class="card-title"></h3>
+            
+                                    <div class="card-tools">
+                                    <form action="{{ route($search_action) }}" method="get">
+                                        <div class="input-group input-group-sm" style="width: 250px;">
+                                    
+                                            <input type="text" name="search_term" class="form-control float-right" placeholder="{{ __('messages.Search') }}" value="{{ app('request')->input('search_term') }}">
+            
+                                            <div class="input-group-append">
+                                            <button type="submit" class="btn btn-default" title="{{ __('messages.Search') }}">
+                                                <i class="fas fa-search"></i>
+                                            </button>
+                                            <a href="{{ route($search_action) }}" class="btn btn-warning" title="{{ __('messages.Reset') }}">
+                                                <i class="fas fa-sync-alt"></i>
+                                            </a>
+                                            </div>
+                                        
+                                        </div>
+                                    </form>
+                                    </div>
+                                </div>
                                 <div id="info" class="tab-pane active ">
                                         <!-- form start -->
                                         @php $x = 1; @endphp
@@ -208,7 +208,29 @@
                             <div class="tab-pane fade" id="custom-content-above-profile" role="tabpanel" aria-labelledby="custom-content-above-profile-tab">
                                 
                                 
-
+                                <div class="card-header">
+                    
+                                    <h3 class="card-title"></h3>
+            
+                                    <div class="card-tools">
+                                    <form action="{{ route($search_action) }}" method="get">
+                                        <div class="input-group input-group-sm" style="width: 250px;">
+                                    
+                                            <input type="text" name="search_term" class="form-control float-right" placeholder="{{ __('messages.Search') }}" value="{{ app('request')->input('search_term') }}">
+            
+                                            <div class="input-group-append">
+                                            <button type="submit" class="btn btn-default" title="{{ __('messages.Search') }}">
+                                                <i class="fas fa-search"></i>
+                                            </button>
+                                            <a href="{{ route($search_action) }}" class="btn btn-warning" title="{{ __('messages.Reset') }}">
+                                                <i class="fas fa-sync-alt"></i>
+                                            </a>
+                                            </div>
+                                        
+                                        </div>
+                                    </form>
+                                    </div>
+                                </div>
                                 
                                 <div id="info" class="tab-pane active ">
                                     <!-- form start -->
