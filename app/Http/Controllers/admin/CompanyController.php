@@ -43,9 +43,10 @@ class CompanyController extends Controller
             $query = $query->Where('name','LIKE', "%{$search}%");
             $this->search="Yes";
         }
+        $data1 = new Company;
 		//$query = $query->Where('status','enabled');
         $data = $query->orderBy('id', 'DESC')->paginate(DEFAULT_PAGINATION_LIMIT);
-        return view('admin.'.$this->folder.'.list')->with(array('data'=>$data,'search'=>$this->search,'heading'=>$this->heading,'add_action'=>$this->add_action,'edit_action'=>$this->edit_action,'delete_action'=>$this->delete_action,'status_action'=>$this->status_action,'search_action'=>$this->search_action));
+        return view('admin.'.$this->folder.'.list')->with(array('data1'=>$data1,'data'=>$data,'search'=>$this->search,'heading'=>$this->heading,'add_action'=>$this->add_action,'edit_action'=>$this->edit_action,'delete_action'=>$this->delete_action,'status_action'=>$this->status_action,'search_action'=>$this->search_action));
     }
 
     /**
@@ -73,17 +74,21 @@ class CompanyController extends Controller
                //'name' => 'required|max:255|alpha_num|unique:companies,name',
               // 'email' => 'required|regex:/(.+)@(.+)\.(.+)/i'
               // 'name' => ['required', 'max:255','alpha',"regex:/^([^\!'\*\\]*)$/"],
-              'name' => ['required','max:200','regex:/^[^(\|\]~`!%^&*=_};:?><’)]*$/'],
+              'name1' => ['required','unique:companies,name','max:200','regex:/^[^(\|\]~`!%^&*=_};:?><’)]*$/'],
 
                 //'name' => 'required|regex:[a-zA-Z0-9.,'"]+$/u|min:3|max:30',
                 //'name' => 'required|regex:/^[\pL\s]+$/u|min:3|max:30',
+            ],
+            [
+                'name1.regex' => 'The Bussiness title format is invalid',
+                'name1.required' => 'The Name field is required.',
             ]);
 
             if (!$validatedData->fails())
             {
                 $data = new company;
-                $data->name = $request->name;
-                $data->slug = Str::slug($request->name,'-');
+                $data->name = $request->name1;
+                $data->slug = Str::slug($request->name1,'-');
                 if($data->save()){
                     $request->session()->flash('message', $this->heading.' added successfully');
                     $request->session()->flash('alert-class', 'alert-success');
@@ -123,9 +128,13 @@ class CompanyController extends Controller
      */
     public function update(Request $request, company $data)
     {
+        // echo $request->id; die;
         if($request->isMethod('post')) {
             $validatedData = Validator::make($request->all(),[
-                'name' => 'required|max:255|unique:companies,name,' . $request->id,
+                'name' => ['required','max:200','regex:/^[^(\|\]~`!%^&*=_};:?><’)]*$/','unique:companies,name,' . $request->id],
+            ],
+            [
+                'name.regex' => 'The Bussiness title format is invalid',
             ]);
 
             if (!$validatedData->fails() )

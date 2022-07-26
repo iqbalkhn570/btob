@@ -86,7 +86,7 @@
           @can('brand-create')
           <!--<a class="btn btn-warning pull-right" href="{{route('brand_export')}}"><i class="fa fa-download"></i> {{ __('messages.Export') }}</a>
             <a class="btn btn-primary pull-right" href="{{route('brand_import')}}"><i class="fa fa-upload"></i> {{ __('messages.Import') }}</a>-->
-            <a href="{{route($add_action)}}" class="btn btn-primary"><i class="fas fa-plus"></i> {{ __('messages.Add') }} {{ __('messages.'.$heading) }} </a>
+            {{-- <a href="{{route($add_action)}}" class="btn btn-primary"><i class="fas fa-plus"></i> {{ __('messages.Add') }} {{ __('messages.'.$heading) }} </a> --}}
             
             @endcan
           </div><!-- /.col -->
@@ -114,6 +114,15 @@
                 @if(Session::has('message'))
                         <p class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ __('messages.'.Session::get('message')) }}.</p>
                     @endif
+                    @if (count($errors) > 0)
+                       <div class="alert alert-danger">
+                           <ul>
+                               @foreach ($errors->all() as $error)
+                                   <li>{{ $error }}</li>
+                               @endforeach
+                           </ul>
+                       </div>
+                   @endif
                     <section class="card">
 
                     <div class="row">
@@ -125,7 +134,7 @@
                                   <div class=" row">
                                     <div class="col-sm-6 form-group">
                                       <label class=" control-label">{{ __('messages.Title') }}*</label>
-                                      <input maxlength="100" minlength="1" autofocus type="text" class="form-control" name="name" maxlength="255" minlength="1"   value="{{old('name',$data1->name) }}" />
+                                      <input maxlength="30" minlength="3" autofocus type="text" class="form-control" name="name1" maxlength="255" minlength="1"   value="{{old('name1',$data1->name) }}" />
                                     </div>
 
                                               <div class="col-sm-2 form-group ">
@@ -139,7 +148,7 @@
                                                         <label for="imageUpload-0"><i style=" margin-left: 10px; margin-top: 8px; " class="fa fa-edit" ></i></label>
                                                     </div>
                                                     <div class="avatar-preview">
-                                                        <div id="imagePreview-0" style="background-image: url(http://i.pravatar.cc/500?img=7);">
+                                                        <div id="imagePreview-0" style="background-image: url({{ asset('public/admin/samples/choose-image.png') }});">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -161,10 +170,10 @@
                                       <div class="col-sm-12 form-group text-right">
                                         {{-- <a href="{{ route($search_action) }}" class="btn btn-warning" ><i class="fa fa-angle-double-left" ></i> {{ __('messages.Back') }}</a>  --}}
                                         @if($data1->id=="")
-                                            <a href="#" onclick="document.getElementById('form_add').reset(); document.getElementById('form_add').value = null; return false;" class="btn btn-secondary reset">{{ __('messages.Reset') }}</a>
+                                            <a href="#" onclick="document.getElementById('form_add').reset(); document.getElementById('form_add').value = null; $('#imagePreview-0').css('background-image', 'url({{ asset('public/admin/samples/choose-image.png') }})');  return false;" class="btn btn-secondary reset">{{ __('messages.Reset') }}</a>
                                                   <input type="submit" class="btn btn-primary" name="submit" value="{{ __('messages.Submit') }}" />
                                             @else
-                                            <a href="#" onclick="document.getElementById('form_add').reset(); document.getElementById('form_add').value = null; return false;" class="btn btn-secondary">{{ __('messages.Reset') }}</a>
+                                            <a href="#" onclick="document.getElementById('form_add').reset(); document.getElementById('form_add').value = null; $('#imagePreview-0').css('background-image', 'url({{ asset('public/admin/samples/choose-image.png') }})'); return false;" class="btn btn-secondary">{{ __('messages.Reset') }}</a>
                                             <input type="submit" class="btn btn-primary" name="submit" value="{{ __('messages.Update') }}" />
                                         @endif
                                       </div>
@@ -218,13 +227,13 @@
 @if($data->count() > 0)    
                         @foreach ($data as $key =>$info)
                         
-                        <form class="" method="post" action="{{ route('brand_edit',$info->id) }}" id="form_add" enctype="multipart/form-data">
+                        <form class="" method="post" action="{{ route('brand_edit',['id'=>$info->id]) }}" id="form_add" enctype="multipart/form-data">
                             @csrf
                             <tr>
 <td>{{ $data->firstItem() + $key  }}</td>     
 
                         <td>
-                            <input type="text" name="name" class="form-control" readonly value="{{ $info->name }}" id="FreeToUpdate{{ $info->id }}"></td>
+                            <input maxlength="30" minlength="3" type="text" name="name" class="form-control" readonly value="{{ $info->name }}" id="FreeToUpdate{{ $info->id }}"></td>
                         </td>
 
 <td>@if($info->image && $info->getBrandImage() )
@@ -248,7 +257,7 @@
                                             <label id="imageUploadNew-{{ $info->id }}" for="imageUpload-{{ $info->id }}" style="display: none;"><i style=" margin-left: 10px; margin-top: 8px; " class="fa fa-edit" ></i></label>
                                         </div>
                                         <div class="avatar-preview">
-                                            <div id="imagePreview-{{ $info->id }}" style="background-image: url(http://i.pravatar.cc/500?img=7);"></div>
+                                            <div id="imagePreview-{{ $info->id }}" style="background-image: url({{ asset('public/admin/samples/choose-image.png') }});"></div>
                                         </div>
                                     </div>
                                     

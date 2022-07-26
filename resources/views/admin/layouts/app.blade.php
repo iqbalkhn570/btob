@@ -296,6 +296,12 @@ $(document).ready(function(){
 $(".reset").click(function() {
     $(this).closest('form').find("input[type=text], textarea").val("");
 });
+
+window.setTimeout(function() {
+    $(".alert").fadeTo(500, 0).slideUp(500, function(){
+        $(this).remove(); 
+    });
+}, 4000);
 </script>
 
 @stack('page_scripts')

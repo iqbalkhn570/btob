@@ -83,8 +83,12 @@ class BrandController extends Controller
         if($request->isMethod('post')) {
             $validatedData = Validator::make($request->all(),[
                 //'name' => 'bail|required|unique:brands,name|max:255|min:1',
-                'name' => ['required','unique:brands,name','max:200','regex:/^[^(\|\]~`!%^&*=_};:?><’)]*$/'],
+                'name1' => ['required','unique:brands,name','max:200','regex:/^[^(\|\]~`!%^&*=_};:?><’)]*$/'],
                 'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:1024',
+            ],
+            [
+                'name1.regex' => 'The Game title format is invalid',
+                'name1.required' => 'The Name field is required.',
             ]);
             if (!$validatedData->fails())
             {
@@ -96,9 +100,9 @@ class BrandController extends Controller
                     $image->move($destinationPath, $image_name);
                 }
                 $data = new brand;
-                $data->name = $request->name;
+                $data->name = $request->name1;
                 $data->image = $image_name;
-                $data->slug = Str::slug($request->name,'-');
+                $data->slug = Str::slug($request->name1,'-');
                 $data->created_by = Auth::user()->id;
                 if($data->save()){
                     $request->session()->flash('message', $this->heading.' added successfully');
@@ -135,8 +139,11 @@ class BrandController extends Controller
     {
         if($request->isMethod('post')) {
             $validatedData = Validator::make($request->all(),[
-                'name' => 'required|max:255|unique:brands,name,' . $request->id,
+                'name' => ['required','max:200','regex:/^[^(\|\]~`!%^&*=_};:?><’)]*$/','unique:brands,name,' . $request->id],
                 'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:1024',
+            ],
+            [
+                'name.regex' => 'The Game title format is invalid',
             ]);
 
             if (!$validatedData->fails() )
