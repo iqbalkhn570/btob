@@ -22,10 +22,15 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     { 
-
-        
-        return view('admin.home');
+         
+         
+        $query = new Company;
+		$query = $query->Where('status','enabled');
+        $data = $query->orderBy('id', 'DESC')->paginate(DEFAULT_PAGINATION_LIMIT);
+        $selectBrand = $request->brands;
+       // dd($query);
+        return view('admin.home')->with(array('company'=>$data,'selectCountry'=>$selectBrand));
     }
 }
