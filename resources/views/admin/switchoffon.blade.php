@@ -163,6 +163,11 @@
                     }
                     window.scrollTo(0, 0);
                     $("#myForm").find(':input[type=submit]').prop('disabled', true);
+                    window.setTimeout(function() {
+                        $(".alert").fadeTo(500, 0).slideUp(500, function(){
+                            $(this).remove(); 
+                        });
+                    }, 4000);
                 },
                 error: function() {
                     alert('error handling here');
@@ -230,7 +235,7 @@
             }
         });
     });
-    window.setTimeout(function() {
+window.setTimeout(function() {
     $(".alert").fadeTo(500, 0).slideUp(500, function(){
         $(this).remove(); 
     });
