@@ -233,22 +233,7 @@ Route::middleware(['2fa'])->group(function () {
             Route::get('/log/delete/{id}', [LogController::class, 'destroy'])->name('admin_log_delete');
             Route::post('get-senior-manager', [UserController::class, 'getSeniorManager']);
             Route::post('get-master-agent', [UserController::class, 'getMasterAgent']);
-
             Route::post('get-agent', [UserController::class, 'getAgent']);
-
-
-            Route::post('saveprizes', [OddsSettingController::class, 'saveprizes'])->name('saveprizes');
-            Route::post('savedropprizes', [OddsSettingController::class, 'savedropprizes'])->name('savedropprizes');
-            Route::get('getGameDetailsVal/{slug}', [OddsSettingController::class, 'getGameDetailsVal']);
-
-            
-            Route::post('saveCommissionSettings', [OddsSettingController::class, 'saveCommissionSettings'])->name('saveCommissionSettings');
-            
-            Route::post('updateCommissionSettings', [OddsSettingController::class, 'updateCommissionSettings'])->name('updateCommissionSettings');
-            Route::get('onDeletePns/{id}', [OddsSettingController::class, 'onDeletePns'])->name('onDeletePns');
-
-
-            Route::get('odd-settings/{page?}', [OddsSettingController::class, 'oddSettings'])->name('odd-settings');
 
         });
     });
