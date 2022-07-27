@@ -4,7 +4,7 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
-
+use App\Models\Company;
 class HomeController extends Controller
 {
     /**
@@ -22,8 +22,15 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
-    {
-        return view('admin.home');
+    public function index(Request $request)
+    { 
+         
+         
+        $query = new Company;
+		$query = $query->Where('status','enabled');
+        $data = $query->orderBy('id', 'DESC')->paginate(DEFAULT_PAGINATION_LIMIT);
+        $selectBrand = $request->brands;
+       // dd($query);
+        return view('admin.home')->with(array('company'=>$data,'selectCountry'=>$selectBrand));
     }
 }
