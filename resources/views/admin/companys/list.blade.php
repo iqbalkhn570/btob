@@ -1,13 +1,19 @@
 @extends('admin.layouts.app')
 
 @section('content')
-
+<style>
+    @media screen and (min-width: 480px) {
+        span#hideandshowtoggle {
+            margin-right: 43px;
+        }
+    }
+</style>
     <!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container-fluid">
-        <div class="row mb-2">
+        <div class="row">
           <div class="col-sm-6">
-            <h1 class="m-0">{{ __('messages.'.$heading) }} </h1>
+            <h1 class="">{{ __('messages.'.$heading) }} </h1>
           </div><!-- /.col -->
           <div class="col-sm-6 text-right">
           {{-- @can('company-create')
@@ -47,59 +53,71 @@
                            </ul>
                        </div>
                    @endif
-                    <section class="card">
+                   
 
-                        <div class="card-body">
-                              <form class="" method="post" action="{{ route('company_add') }}" id="form_add" enctype="multipart/form-data">
+                   <div class="card-header">
+                     
+                    <h3 class="card-title"></h3>
+
+                    <div class="card-tools">
+                    <form action="{{ route($search_action) }}" method="get">
+                    <div class="input-group input-group-sm" style="width: 310px;">
+                   
+                        <input type="text" name="search_term" class="form-control float-right" placeholder="{{ __('messages.Search') }}" value="{{ app('request')->input('search_term') }}">
+
+                        <div class="input-group-append">
+                        <button type="submit" class="btn btn-default" title="{{ __('messages.Search') }}">
+                            <i class="fas fa-search"></i>
+                        </button>
+                        <a href="{{ route($search_action) }}" class="btn btn-warning" title="{{ __('messages.Reset') }}">
+                            <i class="fas fa-sync-alt"></i>
+                        </a>
+                        </div>
+                    
+                    </div>
+                    </form>
+                    </div>
+                </div>
+                    <section class="card">
+                        <div class="">
+                            <div class="card-body row">
+                                <form class="col-md-8" method="post" action="{{ route('company_add') }}" id="form_add" enctype="multipart/form-data">
                                 @csrf
-                                <div class=" row">
-                                  <div class="col-sm-6 form-group">
-                                    <label class=" control-label">{{ __('messages.Title') }}*</label>
-                                    <input maxlength="30" minlength="3" autofocus type="text" class="form-control" name="name1"   value="{{old('name1',$data1->name) }}" />
-                                  </div>
-                                    <div class="col-sm-6 form-group mt-2">
-                                        <br>
-                                        {{-- <a href="{{ route($search_action) }}" class="btn btn-warning" ><i class="fa fa-angle-double-left" ></i> {{ __('messages.Back') }}</a>           --}}
-                                                                
+                                <div @if (count($errors) > 0) @else style="display: none;" @endif id="removehideandshow" class="row">
+                                    <div class="col-md-1">
+                                        {{-- <label class=" control-label">{{ __('messages.Enter Business Title') }}*</label> --}}
+                                    </div>
+                                    <div class="col-sm-6 form-group">
+                                        <input placeholder="Enter Business Title" maxlength="30" minlength="3" autofocus type="text" class="form-control" name="name1"   value="{{old('name1',$data1->name) }}" />
+                                    </div>
+                                    <div class="col-sm-2 form-group">                                                               
                                         @if($data1->id=="")
-                                        <a href="#" onclick="document.getElementById('form_add').reset(); document.getElementById('form_add').value = null; return false;" class="btn btn-secondary reset">{{ __('messages.Reset') }}</a>
-                                                <input type="submit" class="btn btn-primary" name="submit" value="{{ __('messages.Submit') }}" />
+                                        <a href="#" onclick="document.getElementById('form_add').reset(); document.getElementById('form_add').value = null; return false;" class="btn btn-warning text-light reset">
+                                            <i class="fas fa-sync-alt"></i>
+                                            {{-- {{ __('messages.Reset') }} --}}
+                                        </a>
+                                                {{-- <input type="submit" class="btn btn-primary" name="submit" value="{{ __('messages.Add') }}" /> --}}
+                                                <button type="submit" name="submit" class="btn btn-success"><i class="fas fa-plus"></i></button>
                                         @else
-                                        <a href="#" onclick="document.getElementById('form_add').reset(); document.getElementById('form_add').value = null; return false;" class="btn btn-secondary">{{ __('messages.Reset') }}</a>
-                                        <input type="submit" class="btn btn-primary" name="submit" value="{{ __('messages.Update') }}" />
+                                        <a href="#" onclick="document.getElementById('form_add').reset(); document.getElementById('form_add').value = null; return false;" class="btn btn-warning text-light">
+                                            {{-- {{ __('messages.Reset') }} --}}
+                                            <i class="fas fa-sync-alt"></i>
+                                        </a>
+                                        {{-- <input type="submit" class="btn btn-primary" name="submit" value="{{ __('messages.Update') }}" /> --}}
+                                        <button type="submit" name="submit" class="btn btn-success"><i class="fas fa-plus"></i></button>
                                         @endif
                                     </div>
-                                  </div>
-            
-                              </form>
-                            
-                          </div>
-
-
-                    <div class="card-header">
-                     
-                        <h3 class="card-title"></h3>
-
-                        <div class="card-tools">
-                        <form action="{{ route($search_action) }}" method="get">
-                        <div class="input-group input-group-sm" style="width: 250px;">
-                       
-                            <input type="text" name="search_term" class="form-control float-right" placeholder="{{ __('messages.Search') }}" value="{{ app('request')->input('search_term') }}">
-
-                            <div class="input-group-append">
-                            <button type="submit" class="btn btn-default" title="{{ __('messages.Search') }}">
-                                <i class="fas fa-search"></i>
-                            </button>
-                            <a href="{{ route($search_action) }}" class="btn btn-warning" title="{{ __('messages.Reset') }}">
-                                <i class="fas fa-sync-alt"></i>
-                            </a>
+                                </div>
+                                </form>
+                                <div class="col-sm-3 form-group">
+                                    <div class="text-right">
+                                        <span class="btn btn-primary" id="hideandshowtoggle">Add Business</span>
+                                    </div>
+                                </div>
                             </div>
-                        
                         </div>
-                        </form>
-                        </div>
-                    </div>
-                    <!-- /.card-header -->
+
+                        <!-- /.card-header -->
                     <div class="card-body table-responsive p-0">
                    
                         <table class="table table-striped table-bodered table-head-fixed table-sm">
@@ -115,17 +133,17 @@
                             </tr>
                         </thead>
                         <tbody>
-@if($data->count() > 0)    
-                        @foreach ($data as $key =>$info)
-                        
-                        <form class="" method="post" action="{{ route('company_edit',['id'=>$info->id]) }}" id="form_add" enctype="multipart/form-data">
-                            @csrf
-                            <tr>
-<td>{{ $data->firstItem() + $key  }}</td>                            
-                        <td>
-                            <input maxlength="30" minlength="3" type="text" name="name" class="form-control" readonly value="{{ $info->name }}" id="FreeToUpdate{{ $info->id }}"></td>
-                        </td>
-<td>{{ $info->created_at }}</td>
+                            @if($data->count() > 0)    
+                                                    @foreach ($data as $key =>$info)
+                                                    
+                                                    <form class="" method="post" action="{{ route('company_edit',['id'=>$info->id]) }}" id="form_add" enctype="multipart/form-data">
+                                                        @csrf
+                                                        <tr>
+                            <td>{{ $data->firstItem() + $key  }}</td>                            
+                                                    <td>
+                                                        <input maxlength="30" minlength="3" type="text" name="name" class="form-control" readonly value="{{ $info->name }}" id="FreeToUpdate{{ $info->id }}"></td>
+                                                    </td>
+                            <td>{{ $info->created_at }}</td>
                                 <td>{{ $info->updated_at }}</td>
                            <!-- <td>{{date('d-M  Y',strtotime($info->created_at))}}</td>-->
                             <td>
@@ -179,8 +197,21 @@
 
 @section('script')
 <script>
-        
-        function freeToEditable(id){
+      $(document).ready(function(){
+        $("#hideandshowtoggle").click(function(){
+            $("#removehideandshow").toggle(function() {
+   $(this).animate({ 
+     // style change
+   }, 500);
+   },
+   function() {
+   $(this).animate({ 
+     // style change back
+   }, 500);
+ });
+        });
+    });  
+    function freeToEditable(id){
         $("#imageUploadNew-"+id).css("display", "block");
         $("#FreeToUpdate"+id).prop("readonly", false);
         $("#onsubmit_Save_pns"+id).prop('disabled', false);
