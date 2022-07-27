@@ -88,7 +88,8 @@ class BrandController extends Controller
             ],
             [
                 'name1.regex' => 'The Game title format is invalid',
-                'name1.required' => 'The Name field is required.',
+                'name1.required' => 'The Game title field is required.',
+                'name1.unique' => 'The Game title has already been taken.',
             ]);
             if (!$validatedData->fails())
             {
@@ -144,6 +145,7 @@ class BrandController extends Controller
             ],
             [
                 'name.regex' => 'The Game title format is invalid',
+                'name.unique' => 'The Game title has already been taken.',
             ]);
 
             if (!$validatedData->fails() )

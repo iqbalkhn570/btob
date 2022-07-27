@@ -80,8 +80,9 @@ class CompanyController extends Controller
                 //'name' => 'required|regex:/^[\pL\s]+$/u|min:3|max:30',
             ],
             [
-                'name1.regex' => 'The Bussiness title format is invalid',
-                'name1.required' => 'The Name field is required.',
+                'name1.regex' => 'The Business title format is invalid',
+                'name1.required' => 'The Business title field is required.',
+                'name1.unique' => 'The Business title has already been taken.',
             ]);
 
             if (!$validatedData->fails())
@@ -134,7 +135,8 @@ class CompanyController extends Controller
                 'name' => ['required','max:200','regex:/^[^(\|\]~`!%^&*=_};:?><’)]*$/','unique:companies,name,' . $request->id],
             ],
             [
-                'name.regex' => 'The Bussiness title format is invalid',
+                'name.regex' => 'The Business title format is invalid',
+                'name.unique' => 'The Business title has already been taken.',
             ]);
 
             if (!$validatedData->fails() )

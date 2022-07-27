@@ -144,19 +144,19 @@
                                                                             <td style=" width: 300px; "><b>{{$brandinfo->name}}</b></td>
                                                                             <input type="hidden" value="{{ $brand_company->id }}" name="brand_company_id[]">
                                                                             <td>
-                                                                                <input name="first_prize{{$brand_company->id}}" type="number" class="form-control free_to_edit-{{$info->id}}" readonly value="{{ $brand_company->first_prize }}">
+                                                                                <input name="first_prize{{$brand_company->id}}" type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0');" class="form-control free_to_edit-{{$info->id}}" readonly value="{{ $brand_company->first_prize }}">
                                                                             </td>
                                                                             <td>
-                                                                                <input name="second_prize{{$brand_company->id}}" type="number" class="form-control free_to_edit-{{$info->id}}" readonly value="{{ $brand_company->second_prize }}">
+                                                                                <input name="second_prize{{$brand_company->id}}" type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0');" class="form-control free_to_edit-{{$info->id}}" readonly value="{{ $brand_company->second_prize }}">
                                                                             </td>
                                                                             <td>
-                                                                                <input name="third_prize{{$brand_company->id}}" type="number" class="form-control free_to_edit-{{$info->id}}" readonly value="{{ $brand_company->third_prize }}">
+                                                                                <input name="third_prize{{$brand_company->id}}" type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0');" class="form-control free_to_edit-{{$info->id}}" readonly value="{{ $brand_company->third_prize }}">
                                                                             </td>
                                                                             <td>
-                                                                                <input name="special_prize{{$brand_company->id}}" type="number" class="form-control free_to_edit-{{$info->id}}" readonly value="{{ $brand_company->special_prize }}">
+                                                                                <input name="special_prize{{$brand_company->id}}" type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0');" class="form-control free_to_edit-{{$info->id}}" readonly value="{{ $brand_company->special_prize }}">
                                                                             </td>
                                                                             <td>
-                                                                                <input name="consolation_prize{{$brand_company->id}}" type="number" class="form-control free_to_edit-{{$info->id}}" readonly value="{{ $brand_company->consolation_prize }}">
+                                                                                <input name="consolation_prize{{$brand_company->id}}" type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0');" class="form-control free_to_edit-{{$info->id}}" readonly value="{{ $brand_company->consolation_prize }}">
                                                                             </td>
                                                                         </tr>
                                                                     
@@ -281,10 +281,10 @@
                                                                         <td style=" width: 300px; "><b>{{$brandinfo->name}}</b></td>
                                                                         <input type="hidden" value="{{ $brand_company->id }}" name="brand_company_id[]">
                                                                         <td>
-                                                                            <input name="prize_drop_off{{$brand_company->id}}" type="number" class="form-control free_to_edit2-{{$info->id}}" readonly value="{{ $brand_company->prize_drop_off }}">
+                                                                            <input oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0');" name="prize_drop_off{{$brand_company->id}}" type="text" class="form-control free_to_edit2-{{$info->id}}" readonly value="{{ $brand_company->prize_drop_off }}">
                                                                         </td>
                                                                         <td>
-                                                                            <input name="max_allowed_limit{{$brand_company->id}}" type="number" class="form-control free_to_edit2-{{$info->id}}" readonly value="{{ $brand_company->max_allowed_limit }}">
+                                                                            <input oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0');" name="max_allowed_limit{{$brand_company->id}}" type="text" class="form-control free_to_edit2-{{$info->id}}" readonly value="{{ $brand_company->max_allowed_limit }}">
                                                                         </td>
                                                                         <td>
                                                                             <input name="decremental_percentage_value{{$brand_company->id}}" type="text" class="form-control free_to_edit2-{{$info->id}}" readonly value="{{ $brand_company->decremental_percentage_value }}" maxlength="5" min="0.01" step="0.01" onkeyup="this.value = minmax(this.value, 0, 100)">
@@ -355,7 +355,7 @@
                                                 </div>
                                                 <div class="row" id="allMainData">
                                                     <div class="form-group col-md-3">
-                                                        <input required type="text" name="populer_number0" class="form-control" id="PopulerNumber" placeholder="Popular Number">
+                                                        <input oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0');" required type="text" name="populer_number0" class="form-control" id="PopulerNumber" placeholder="Popular Number">
                                                       </div>
                                                       <div class="form-group col-md-3">
                                                         <div class="form-group">
@@ -410,15 +410,15 @@
                                                     $sr = 1;
                                                 @endphp
                                         @forelse ($populerNumberSettings as $pnsVal)
-                                            <form id="formPns{{ $pnsVal->id }}">
-                                                @csrf
+                                            {{-- <form id="formPns{{ $pnsVal->id }}">
+                                                @csrf --}}
                                                 <tr>
                                                     <td class="text-center">
                                                         {{ $sr }}
                                                     </td>
                                                     <td style=" width: 300px; ">
-                                                        <input type="hidden" name="id" value="{{ $pnsVal->id }}">
-                                                        <input type="number" name="populer_number" class="form-control" readonly value="{{ $pnsVal->populer_number }}" id="pnsFreeToUpdate{{ $pnsVal->id }}"></td>
+                                                        <input type="hidden" name="id" value="{{ $pnsVal->id }}" id="forid-{{ $pnsVal->id }}">
+                                                        <input oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0');" type="text" name="populer_number" class="form-control" readonly value="{{ $pnsVal->populer_number }}" id="pnsFreeToUpdate{{ $pnsVal->id }}"></td>
                                                     <td>
                                                         {{ $pnsVal->c_name }}
                                                     </td>
@@ -439,7 +439,7 @@
                                                         </div>
                                                     </td>
                                                 </tr> 
-                                            </form>
+                                            {{-- </form> --}}
                                             @php
                                                 $sr++;
                                             @endphp                                           
@@ -679,11 +679,13 @@ $("#example1").dataTable({
     }    
 
     function onsubmitSavePns(id){
-        var datastring = $("#formPns"+id).serialize();
+        // var datastring = $("#formPns"+id).serialize(); 
+        var forpopuler_number = $("#pnsFreeToUpdate"+id).val();
+        var forid = $("#forid-"+id).val();
             $.ajax({
                 type: "POST",
                 url: '{{route('updateCommissionSettings')}}',
-                data: datastring,
+                data: {"_token": "{{ csrf_token() }}" , "populer_number": forpopuler_number, "id": forid},
                 dataType: "json",
                 success: function(data) {
                     if(data == 1){
