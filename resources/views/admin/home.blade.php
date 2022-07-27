@@ -5,11 +5,12 @@
     <div class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
-          <div class="col-sm-9">
+          <div class="col-sm-8">
             <h1 class="m-0">Dashboard v2</h1>
           </div><!-- /.col -->
-         
-          <div class="col-sm-1"> 
+          <div class="col-sm-4">
+          <div class="row mb-2">
+          <div class="col-sm-4"> 
           <form class="" method="get" action="" id="search_brands" >
          
           <div class="form-group">
@@ -24,12 +25,14 @@
                      </form>       
           </div>
          
-          <div class="col-sm-2">
+          <div class="col-sm-8">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
               <li class="breadcrumb-item active">Dashboard v2</li>
             </ol>
           </div><!-- /.col -->
+</div>
+</div>
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
     </div>
