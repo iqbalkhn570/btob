@@ -235,7 +235,11 @@
 <script src="{{ asset('public/admin/plugins/jquery-mapael/maps/usa_states.min.js') }}"></script>
 <!-- ChartJS -->
 <script src="{{ asset('public/admin/plugins/chart.js/Chart.min.js') }}"></script>
-<script src="{{ asset('public/admin/dist/js/pages/dashboard2.js') }}"></script>
+<!-- <script src="{{ asset('public/admin/dist/js/pages/dashboard2.js') }}"></script> -->
+<script src="{{ asset('public/admin/dist/js/pages/dashboard.js') }}"></script>
+
+<!-- jQuery Knob Chart -->
+<script src="{{ asset('public/admin/plugins/jquery-knob/jquery.knob.min.js') }}"></script>
 <!-- Select2 -->
 <script src="{{ asset('public/admin/plugins/select2/js/select2.full.min.js') }}"></script>
 <script src="{{ asset('public/admin/plugins/moment/moment.min.js') }}"></script>
