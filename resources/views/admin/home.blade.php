@@ -30,46 +30,22 @@
       <div class="card card-default">
           <div class="card-header">
             <h3 class="card-title">Filters</h3>
-
-            <!-- <div class="card-tools">
-              <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                <i class="fas fa-minus"></i>
-              </button>
-              <button type="button" class="btn btn-tool" data-card-widget="remove">
-                <i class="fas fa-times"></i>
-              </button>
-            </div> -->
-          </div>
-          <!-- /.card-header -->
-          <div class="card-body">
-          <form class="" method="get" action="" id="search_brands" >
-            <div class="row">
-
-              <div class="col-md-2">
-                 <div class="form-group">
-                 <label>Companies</label>
-                       <select class="form-control" name="brands" onchange="this.form.submit()">
+            
+            <div class="card-tools">
+            <form class="" method="get" action="" id="search_brands" >
+                  <select class="form-control" name="brands" onchange="this.form.submit()">
                        @foreach($company as $row)
 
                       <option value="{{ $row->name }}" {{ $selectCountry == $row->name ? 'selected' : '' }}>{{ $row->name }}</option>
                       @endforeach
 
-                       </select>
-                     </div>
-
-              </div>
-              <!-- /.col -->
-              <div class="col-md-3">
-
-
-              </div>
-              <!-- /.col -->
-
+                    </select>
+                    </form>     
             </div>
-            <!-- /.row -->
-            </form>
-
+            
           </div>
+          <!-- /.card-header -->
+          
 
         </div>
         <div class="row">
@@ -136,7 +112,7 @@
         </div>
         <!-- /.row -->
 
-     
+
 
         <div class="row">
           <section class="col-lg-8 connectedSortable">
