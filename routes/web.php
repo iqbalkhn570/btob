@@ -102,8 +102,8 @@ Route::group(['prefix' => RouteServiceProvider::ADMIN_URL_SUFFIX], function () {
 Route::middleware(['2fa'])->group(function () {
 
     // HomeController
-    Route::get('/home', [HomeController::class, 'index'])->name('home');
-
+    //Route::get('/home', [HomeController::class, 'index'])->name('home');  
+    Route::match(['get', 'post'] , '/home', [HomeController::class, 'index'])->name('home');
     Route::post('/2fa', function () {
         return redirect(route('home'));
     })->name('2fa');

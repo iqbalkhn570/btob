@@ -32,11 +32,27 @@
             <h3 class="card-title">Filters</h3>
             
             <div class="card-tools">
-            <form class="" method="get" action="" id="search_brands" >
-                  <select class="form-control" name="brands" onchange="this.form.submit()">
+            <form class="row" method="get" action="" id="search_brands" >
+            <div class="form-group col-md-8">
+                 
+
+                  
+                  <div class="float-right mr-3">
+                     <div class="input-group">
+                     <div class="input-group-prepend">
+                        <span class="input-group-text">
+                           <i class="far fa-calendar-alt"></i>
+                        </span>
+                     </div>
+                     <input type="text" class="form-control  form-control-sm float-right" name="filter_date_range" id="filter_date_range" value="{{app('request')->input('filter_date_range')}}">
+                     </div>
+                     <!-- /.input group -->
+                  </div>
+                </div>
+                  <select class="form-control col-md-4" name="brands" onchange="this.form.submit()">
                        @foreach($company as $row)
 
-                      <option value="{{ $row->name }}" {{ $selectCountry == $row->name ? 'selected' : '' }}>{{ $row->name }}</option>
+                      <option value="{{ $row->id }}" {{ $selectCountry == $row->id ? 'selected' : '' }}>{{ $row->name }}</option>
                       @endforeach
 
                     </select>
@@ -48,12 +64,13 @@
           
 
         </div>
+        
         <div class="row">
           <div class="col-lg-3 col-6">
             <!-- small box -->
             <div class="small-box bg-info">
               <div class="inner">
-                <h3>150</h3>
+                <h3> <i class="fas fa-dollar-sign" aria-hidden="true"></i>{{$dashboardData->turnover ?? '0'}}</h3>
 
                 <p>Turnover</p>
               </div>
@@ -68,7 +85,7 @@
             <!-- small box -->
             <div class="small-box bg-success">
               <div class="inner">
-                <h3>53<sup style="font-size: 20px">%</sup></h3>
+                <h3><i class="fas fa-dollar-sign" aria-hidden="true"></i>{{$dashboardData->total_payout ?? 0}}</h3>
 
                 <p>Total Payout</p>
               </div>
@@ -83,7 +100,7 @@
             <!-- small box -->
             <div class="small-box bg-warning">
               <div class="inner">
-                <h3>44</h3>
+                <h3><i class="fas fa-dollar-sign" aria-hidden="true"></i>{{$dashboardData->gross_gaming_revenue??0}}</h3>
 
                 <p>Gross Gaming Revenue (GGR) </p>
               </div>
@@ -98,7 +115,7 @@
             <!-- small box -->
             <div class="small-box bg-danger">
               <div class="inner">
-                <h3>65</h3>
+                <h3><i class="fas fa-dollar-sign" aria-hidden="true"></i>{{$dashboardData->largest_bets?? 0}}</h3>
 
                 <p>Game with Largest Bets</p>
               </div>
@@ -116,7 +133,7 @@
             <!-- small box -->
             <div class="small-box bg-info">
               <div class="inner">
-                <h3>150</h3>
+                <h3><i class="fas fa-dollar-sign" aria-hidden="true"></i>{{$dashboardData->most_amount_bets?? 0}}</h3>
 
                 <p>Game with Most Amount of Bets</p>
               </div>
@@ -131,7 +148,7 @@
             <!-- small box -->
             <div class="small-box bg-success">
               <div class="inner">
-                <h3>53<sup style="font-size: 20px">%</sup></h3>
+                <h3><i class="fas fa-dollar-sign" aria-hidden="true"></i>{{$dashboardData->least_amount_bets?? 0}}</h3>
 
                 <p>Game with Least Amount of Bets</p>
               </div>
@@ -146,7 +163,7 @@
             <!-- small box -->
             <div class="small-box bg-warning">
               <div class="inner">
-                <h3>44</h3>
+                <h3><i class="fas fa-dollar-sign" aria-hidden="true"></i>{{$dashboardData->top_game_revenue?? 0}}</h3>
 
                 <p>Top Game Revenue </p>
               </div>
@@ -161,7 +178,7 @@
             <!-- small box -->
             <div class="small-box bg-danger">
               <div class="inner">
-                <h3>65</h3>
+                <h3><i class="fas fa-dollar-sign" aria-hidden="true"></i>{{$dashboardData->low_game_revenue?? 0}}</h3>
 
                 <p>Low Game Revenue</p>
               </div>
@@ -376,6 +393,34 @@
 @section('script')
 
 <script type="text/javascript">
+      $(function () {
+
+    
+    var nowDate = new Date();
+   var today = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate(), 0, 0, 0, 0);
+    //Date range as a button
+    $('#filter_date_range').daterangepicker(
+      {
+         "maxDate": today,
+         "autoApply": true,
+        // "startDate" :moment().subtract(29, 'days'),
+       //  "endDate" : moment(),
+        ranges   : {
+          'Today'       : [moment(), moment()],
+          'Yesterday'   : [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+          'Last 7 Days' : [moment().subtract(6, 'days'), moment()],
+          'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+          'This Month'  : [moment().startOf('month'), moment().endOf('month')],
+          'Last Month'  : [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        },
+        
+      },
+      function (start, end) {
+       // $('#filter_date_range').val(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+     
+      }
+    )
+      })
         window.history.forward();
         function noBack() {
             window.history.forward();
