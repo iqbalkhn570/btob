@@ -44,7 +44,7 @@
                            <i class="far fa-calendar-alt"></i>
                         </span>
                      </div>
-                     <input type="text" class="form-control  form-control-sm float-right" name="filter_date_range" id="filter_date_range" value="{{app('request')->input('filter_date_range')}}">
+                     <input type="text" class="form-control  form-control-sm float-right"  name="filter_date_range" id="filter_date_range" value="{{ request()->input('filter_date_range')  }}">
                      </div>
                      <!-- /.input group -->
                   </div>
@@ -416,6 +416,8 @@
         
       },
       function (start, end) {
+        // $('#search_brands').submit();
+       console.log(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
        // $('#filter_date_range').val(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
      
       }
