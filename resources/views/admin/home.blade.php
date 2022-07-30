@@ -37,7 +37,7 @@
                  
 
                   
-                  <div class="float-right mr-3">
+                  <div class="form-control  mr-3">
                      <div class="input-group">
                      <div class="input-group-prepend">
                         <span class="input-group-text">
@@ -79,7 +79,7 @@
                 <i class="ion ion-bag"></i>
               </div>
               <input type="hidden" name="turnover" id="turnover" value="{{__('turnover')}}">
-              <!-- <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
+              <a href="#" class="small-box-footer">Show chart <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -95,7 +95,7 @@
                 <i class="ion ion-stats-bars"></i>
               </div>
               <input type="hidden" name="turnover" id="turnover" value="{{__('total_payout')}}">
-              <!-- <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
+              <a href="#" class="small-box-footer">Show chart <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -111,7 +111,7 @@
                 <i class="ion ion-person-add"></i>
               </div>
               <input type="hidden" name="turnover" id="turnover" value="{{__('gross_gaming_revenue')}}">
-              <!-- <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
+              <a href="#" class="small-box-footer">Show chart <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -127,7 +127,7 @@
                 <i class="ion ion-pie-graph"></i>
               </div>
               <input type="hidden" name="turnover" id="turnover" value="{{__('largest_bets')}}">
-              <!-- <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
+              <a href="#" class="small-box-footer">Show chart <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -136,7 +136,7 @@
         <div class="row">
           <div class="col-lg-3 col-6 tabclss" style="cursor:pointer">
             <!-- small box -->
-            <div class="small-box bg-info">
+            <div class="small-box bg-danger ">
               <div class="inner">
                 <h3><i class="fas fa-dollar-sign" aria-hidden="true"></i>{{$dashboardData->most_amount_bets?? 0}}</h3>
 
@@ -146,12 +146,13 @@
                 <i class="ion ion-bag"></i>
               </div>
               <input type="hidden" name="turnover" id="turnover" value="{{__('most_amount_bets')}}">
+              <a href="#" class="small-box-footer">Show chart <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
           <div class="col-lg-3 col-6 tabclss" style="cursor:pointer">
             <!-- small box -->
-            <div class="small-box bg-success">
+            <div class="small-box bg-warning ">
               <div class="inner">
                 <h3><i class="fas fa-dollar-sign" aria-hidden="true"></i>{{$dashboardData->least_amount_bets?? 0}}</h3>
 
@@ -161,12 +162,13 @@
                 <i class="ion ion-stats-bars"></i>
               </div>
               <input type="hidden" name="turnover" id="turnover" value="{{__('least_amount_bets')}}">
+              <a href="#" class="small-box-footer">Show chart <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
           <div class="col-lg-3 col-6 tabclss" style="cursor:pointer">
             <!-- small box -->
-            <div class="small-box bg-warning">
+            <div class="small-box bg-success">
               <div class="inner">
                 <h3><i class="fas fa-dollar-sign" aria-hidden="true"></i>{{$dashboardData->top_game_revenue?? 0}}</h3>
 
@@ -176,12 +178,13 @@
                 <i class="ion ion-person-add"></i>
               </div>
               <input type="hidden" name="turnover" id="turnover" value="{{__('top_game_revenue')}}">
+              <a href="#" class="small-box-footer">Show chart <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
           <div class="col-lg-3 col-6 tabclss" style="cursor:pointer">
             <!-- small box -->
-            <div class="small-box bg-danger">
+            <div class="small-box bg-info">
               <div class="inner">
                 <h3><i class="fas fa-dollar-sign" aria-hidden="true"></i>{{$dashboardData->low_game_revenue?? 0}}</h3>
 
@@ -191,6 +194,7 @@
                 <i class="ion ion-pie-graph"></i>
               </div>
               <input type="hidden" name="turnover" id="turnover" value="{{__('low_game_revenue')}}">
+              <a href="#" class="small-box-footer">Show chart <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -200,21 +204,21 @@
         <div class="row">
           <section class="col-lg-8 connectedSortable">
           <!-- solid sales graph -->
-           <div class="card bg-gradient-info">
+           <div class="card {{$chartColor}}">
                   <div class="card-header border-0">
                     <h3 class="card-title">
                       <i class="fas fa-th mr-1"></i>
-                      {{ $graphFor ??'Turnover'  }} Graph
+                      {{ ucwords($graphFor) ??'Turnover'  }} Graph
                     </h3>
 
-                    <div class="card-tools">
+                    <!-- <div class="card-tools">
                       <button type="button" class="btn bg-info btn-sm" data-card-widget="collapse">
                         <i class="fas fa-minus"></i>
                       </button>
                       <button type="button" class="btn bg-info btn-sm" data-card-widget="remove">
                         <i class="fas fa-times"></i>
                       </button>
-                    </div>
+                    </div> -->
                   </div>
                   <div class="card-body">
                     <canvas class="chart" id="line-chart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
@@ -260,14 +264,14 @@
               <div class="card-header">
                 <h3 class="card-title">Users Chart</h3>
 
-                <div class="card-tools">
+                <!-- <div class="card-tools">
                   <button type="button" class="btn btn-tool" data-card-widget="collapse">
                     <i class="fas fa-minus"></i>
                   </button>
                   <button type="button" class="btn btn-tool" data-card-widget="remove">
                     <i class="fas fa-times"></i>
                   </button>
-                </div>
+                </div> -->
               </div>
               <!-- /.card-header -->
               <div class="card-body">

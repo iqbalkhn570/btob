@@ -50,6 +50,7 @@ class HomeController extends Controller
                         $daysArr = [];
                         $turnoverArr = [];
                         $graphFor = 'Turnover';
+                        $chartColor = 'bg-gradient-info';
                         if($days>1){
                             
                             for($i=1; $i<=$days ; $i++){
@@ -73,24 +74,31 @@ class HomeController extends Controller
                                                 }elseif($request->chart_for =='total_payout'){
                                                     $turnoverArr[] = $dataturnoverGp->total_payout;
                                                     $graphFor = 'total payout';
+                                                    $chartColor = 'bg-success';
                                                 }elseif($request->chart_for =='gross_gaming_revenue'){
                                                     $turnoverArr[] = $dataturnoverGp->gross_gaming_revenue;
                                                     $graphFor = 'gross gaming revenue';
+                                                    $chartColor = 'bg-warning';
                                                 }elseif($request->chart_for =='largest_bets'){
                                                     $turnoverArr[] = $dataturnoverGp->largest_bets;
                                                     $graphFor = 'largest bets';
+                                                    $chartColor = 'bg-danger';
                                                 }elseif($request->chart_for =='most_amount_bets'){
                                                     $turnoverArr[] = $dataturnoverGp->most_amount_bets;
                                                     $graphFor = 'most amount bets';
+                                                    $chartColor = 'bg-danger';
                                                 }elseif($request->chart_for =='least_amount_bets'){
                                                     $turnoverArr[] = $dataturnoverGp->least_amount_bets;
                                                     $graphFor = 'least amount bets';
+                                                    $chartColor = 'bg-warning';
                                                 }elseif($request->chart_for =='top_game_revenue'){
                                                     $turnoverArr[] = $dataturnoverGp->top_game_revenue;
                                                     $graphFor = 'top game revenue';
+                                                    $chartColor = 'bg-success';
                                                 }elseif($request->chart_for =='low_game_revenue'){
                                                     $turnoverArr[] = $dataturnoverGp->low_game_revenue;
                                                     $graphFor = 'low game revenue';
+                                                    $chartColor = 'bg-gradient-info';
                                                 }
                                                 else{
                                                     $turnoverArr[] = $dataturnoverGp->turnover;
@@ -116,6 +124,6 @@ class HomeController extends Controller
                 ->groupBy('bussiness_entity_id')
                 ->first();
         
-        return view('admin.home')->with(array('company'=>$data,'selectCountry'=>$selectBrand,"dashboardData"=>$dashboardData,'daysArr'=>$daysArr,'turnoverArr'=>$turnoverArr,'graphFor'=>$graphFor));
+        return view('admin.home')->with(array('company'=>$data,'selectCountry'=>$selectBrand,"dashboardData"=>$dashboardData,'daysArr'=>$daysArr,'turnoverArr'=>$turnoverArr,'graphFor'=>$graphFor,'chartColor'=>$chartColor));
     }
 }
