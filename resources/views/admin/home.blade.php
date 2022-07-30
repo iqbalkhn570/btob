@@ -433,7 +433,10 @@
      
       }
     )
-
+    $('#filter_date_range').on('apply.daterangepicker', function(ev, picker) {
+  //do something, like clearing an input
+  $('#search_brands').submit();
+});
 
 
      // Sales graph chart

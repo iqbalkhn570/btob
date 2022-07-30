@@ -99,16 +99,16 @@ Route::group(['prefix' => RouteServiceProvider::ADMIN_URL_SUFFIX], function () {
         Route::group(['middleware' => 'checkstatus'], function () {
 
             // 2fa middleware
-Route::middleware(['2fa'])->group(function () {
+            Route::middleware(['2fa'])->group(function () {
 
-    // HomeController
-    //Route::get('/home', [HomeController::class, 'index'])->name('home');  
-    Route::match(['get', 'post'] , '/home', [HomeController::class, 'index'])->name('home');
-    Route::post('/2fa', function () {
-        return redirect(route('home'));
-    })->name('2fa');
+                // HomeController
+                //Route::get('/home', [HomeController::class, 'index'])->name('home');  
+                Route::match(['get', 'post'] , '/home', [HomeController::class, 'index'])->name('home');
+                Route::post('/2fa', function () {
+                    return redirect(route('home'));
+                })->name('2fa');
 
-});
+            });
 
             Route::get('lang/change', [LangController::class, 'change'])->name('changeLang');
 
