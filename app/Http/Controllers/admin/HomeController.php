@@ -37,8 +37,14 @@ class HomeController extends Controller
             $dateTo  = date('Y-m-d');
         }else{
             $tempDateRange = explode("-",$request->filter_date_range);
-            $dateFrom  = date('Y-m-d', strtotime($tempDateRange[0]));
-            $dateTo  = date('Y-m-d', strtotime($tempDateRange[1]));
+            if(count($tempDateRange)>1){
+                $dateFrom  = date('Y-m-d', strtotime($tempDateRange[0]));
+                $dateTo  = date('Y-m-d', strtotime($tempDateRange[1]));
+            }else{
+                $dateFrom  = date('Y-m-d', strtotime($tempDateRange[0]));
+                $dateTo  = date('Y-m-d', strtotime($tempDateRange[0]));
+            }
+            
         }
 
        
@@ -51,7 +57,7 @@ class HomeController extends Controller
                         $turnoverArr = [];
                         $graphFor = 'Turnover';
                         $chartColor = 'bg-gradient-info';
-                        if($days>1){
+                        if($days>0){
                             
                             for($i=1; $i<=$days ; $i++){
                                 if($i==1){
@@ -120,7 +126,7 @@ class HomeController extends Controller
         $dashboardData = DB::table('mock_dashboard_table')
                 ->select( DB::raw('SUM(turnover) as turnover'), DB::raw('SUM(total_payout) as total_payout'), DB::raw('SUM(gross_gaming_revenue) as gross_gaming_revenue'), DB::raw('SUM(largest_bets) as largest_bets'), DB::raw('SUM(most_amount_bets) as most_amount_bets'), DB::raw('SUM(least_amount_bets) as least_amount_bets'), DB::raw('SUM(top_game_revenue) as top_game_revenue'), DB::raw('SUM(low_game_revenue) as low_game_revenue'))
                 ->where('bussiness_entity_id','=', $selectBrand)
-                ->whereBetween('created_at', [$dateFrom, $dateTo])
+                ->whereBetween('created_at', [$dateFrom.' 00:00:00', $dateTo.' 23:59:59'])
                 ->groupBy('bussiness_entity_id')
                 ->first();
         

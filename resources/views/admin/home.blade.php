@@ -33,26 +33,28 @@
 
             <div class="card-tools">
             <form class="row" method="get" action="" id="search_brands" >
-            <div class="form-group col-md-7">
-              <div class="form-control  mr-3">
+            <div class="form-group col-md-7 d-flex">
+              <div class="form-control">
                      <div class="input-group">
-                     <div class="input-group-prepend">
-                        <span class="input-group-text">
-                           <i class="far fa-calendar-alt"></i>
-                        </span>
-                     </div>
-                     <input type="text" class="form-control  form-control-sm float-right"  name="filter_date_range" id="filter_date_range" value="{{ request()->input('filter_date_range')  }}">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">
+                              <i class="far fa-calendar-alt"></i>
+                            </span>
+                        </div>
+                       <input type="text" class="form-control  form-control-sm float-right"  name="filter_date_range" id="filter_date_range" value="{{ request()->input('filter_date_range')  }}">
                      </div>
                      <!-- /.input group -->
                   </div>
               </div>
-                  <select class="form-control col-md-5" name="brands" onchange="this.form.submit()">
+              <div class="form-group col-md-5 d-flex">
+                  <select class="form-control " name="brands" onchange="this.form.submit()">
                        @foreach($company as $row)
 
                       <option value="{{ $row->id }}" {{ $selectCountry == $row->id ? 'selected' : '' }}>{{ $row->name }}</option>
                       @endforeach
 
                     </select>
+               </div>     
                     <input type="hidden" name="chart_for" id="chart_for">
                     </form>
             </div>
@@ -418,8 +420,8 @@
         // "startDate" :moment().subtract(29, 'days'),
        //  "endDate" : moment(),
         ranges   : {
-          'Today'       : [moment(), moment()],
-          'Yesterday'   : [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+          'Today'       : [moment(),moment()],
+          'Yesterday'   : [moment().subtract(1, 'days'),moment().subtract(1, 'days')],
           'Last 7 Days' : [moment().subtract(6, 'days'), moment()],
           'Last 30 Days': [moment().subtract(29, 'days'), moment()],
           'This Month'  : [moment().startOf('month'), moment().endOf('month')],
@@ -429,15 +431,27 @@
       },
       function (start, end) {
         // $('#search_brands').submit();
-       console.log(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+        
+       //console.log(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
        // $('#filter_date_range').val(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
 
       }
     )
     $('#filter_date_range').on('apply.daterangepicker', function(ev, picker) {
+      console.log(picker.chosenLabel );
+      // if(picker.chosenLabel=='Today'){
+      //   $(this).val(moment().format('MM/DD/YYYY') );
+      // }
+      // if(picker.chosenLabel=='Yesterday'){
+      //   $(this).val(moment().subtract(1, 'days').format('MM/DD/YYYY') );
+      // }
   //do something, like clearing an input
   $('#search_brands').submit();
 });
+
+$('.fa-calendar-alt').click(function() {
+    $("#filter_date_range").focus();
+  });
 
 
      // Sales graph chart
