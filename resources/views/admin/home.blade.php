@@ -1,5 +1,6 @@
 @extends('admin.layouts.app')
 
+
 @section('content')
     <!-- Content Header (Page header) -->
     <div class="content-header">
@@ -33,7 +34,7 @@
 
             <div class="card-tools">
             <form class="row" method="get" action="" id="search_brands" >
-            <div class="form-group col-md-7 d-flex">
+            <div class="form-group col-md-6 d-flex">
               <div class="form-control">
                      <div class="input-group">
                         <div class="input-group-prepend">
@@ -46,7 +47,7 @@
                      <!-- /.input group -->
                   </div>
               </div>
-              <div class="form-group col-md-5 d-flex">
+              <div class="form-group col-md-6 d-flex">
                   <select class="form-control " name="brands" onchange="this.form.submit()">
                        @foreach($company as $row)
 
