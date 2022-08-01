@@ -30,14 +30,11 @@
       <div class="card card-default">
           <div class="card-header">
             <h3 class="card-title">Filters</h3>
-            
+
             <div class="card-tools">
             <form class="row" method="get" action="" id="search_brands" >
-            <div class="form-group col-md-8">
-                 
-
-                  
-                  <div class="form-control  mr-3">
+            <div class="form-group col-md-7">
+              <div class="form-control  mr-3">
                      <div class="input-group">
                      <div class="input-group-prepend">
                         <span class="input-group-text">
@@ -48,24 +45,24 @@
                      </div>
                      <!-- /.input group -->
                   </div>
-                </div>
-                  <select class="form-control col-md-4" name="brands" onchange="this.form.submit()">
+              </div>
+                  <select class="form-control col-md-5" name="brands" onchange="this.form.submit()">
                        @foreach($company as $row)
 
                       <option value="{{ $row->id }}" {{ $selectCountry == $row->id ? 'selected' : '' }}>{{ $row->name }}</option>
                       @endforeach
 
                     </select>
-                    <input type="hidden" name="chart_for" id="chart_for"> 
-                    </form>     
+                    <input type="hidden" name="chart_for" id="chart_for">
+                    </form>
             </div>
-            
+
           </div>
           <!-- /.card-header -->
-          
+
 
         </div>
-        
+
         <div class="row">
           <div class="col-lg-3 col-6 tabclss" style="cursor:pointer">
             <!-- small box -->
@@ -232,27 +229,27 @@
 
                         <div class="text-white">Mail-Orders</div>
                       </div>
-                      
+
                       <div class="col-4 text-center">
                         <input type="text" class="knob" data-readonly="true" value="50" data-width="60" data-height="60"
                               data-fgColor="#39CCCC">
 
                         <div class="text-white">Online</div>
                       </div>
-                      
+
                       <div class="col-4 text-center">
                         <input type="text" class="knob" data-readonly="true" value="30" data-width="60" data-height="60"
                               data-fgColor="#39CCCC">
 
                         <div class="text-white">In-Store</div>
                       </div>
-                      
+
                     </div>
-                  
+
                   </div> -->
-                
+
                 </div>
-                
+
 
 
 
@@ -345,7 +342,7 @@
               <div class="icon">
                 <i class="ion ion-bag"></i>
               </div>
-           
+
             </div>
           </div>
           <!-- ./col -->
@@ -360,7 +357,7 @@
               <div class="icon">
                 <i class="ion ion-stats-bars"></i>
               </div>
-              
+
             </div>
           </div>
           <!-- ./col -->
@@ -375,7 +372,7 @@
               <div class="icon">
                 <i class="ion ion-person-add"></i>
               </div>
-              
+
             </div>
           </div>
           <!-- ./col -->
@@ -390,7 +387,7 @@
               <div class="icon">
                 <i class="ion ion-pie-graph"></i>
               </div>
-             
+
             </div>
           </div>
           <!-- ./col -->
@@ -404,12 +401,12 @@
 <script type="text/javascript">
       $(function () {
 
-    
-       
+
+
          $( ".tabclss" ).click(function() {
            $('#chart_for').val($(this).find("input").val());
            $('#search_brands').submit();
-            
+
           });
     var nowDate = new Date();
    var today = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate(), 0, 0, 0, 0);
@@ -428,13 +425,13 @@
           'This Month'  : [moment().startOf('month'), moment().endOf('month')],
           'Last Month'  : [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
         },
-        
+
       },
       function (start, end) {
         // $('#search_brands').submit();
        console.log(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
        // $('#filter_date_range').val(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-     
+
       }
     )
     $('#filter_date_range').on('apply.daterangepicker', function(ev, picker) {
@@ -520,7 +517,7 @@
       'Online Users',
       'OffLine Users',
       'Inactive Users'
-      
+
     ],
     datasets: [
       {
