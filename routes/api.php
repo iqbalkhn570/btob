@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\BrandController;
+use App\Http\Controllers\Api\BussinessController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,5 +41,6 @@ Route::group(["middleware" => ["auth:api"]], function(){
 
 Route::middleware('auth:api')->group( function () {
     Route::resource('brands', BrandController::class);
+    Route::resource('bussinesses', BussinessController::class);
 });
 
