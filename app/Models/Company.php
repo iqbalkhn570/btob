@@ -19,4 +19,8 @@ class Company extends Model
     protected $fillable = [
         'name','slug'
     ];
+
+    public function brands (){
+        return $this->belongsToMany(Brand::class, 'brand_company')->orderBy('brands.name','ASC')->withPivot('status');
+    }
 }

@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\BrandController;
 use App\Http\Controllers\Api\BussinessController;
+use App\Http\Controllers\Api\SwitchoffonController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,5 +43,7 @@ Route::group(["middleware" => ["auth:api"]], function(){
 Route::middleware('auth:api')->group( function () {
     Route::resource('brands', BrandController::class);
     Route::resource('bussinesses', BussinessController::class);
+    Route::get("switchoffon", [SwitchoffonController::class, "index"]);
+
 });
 
