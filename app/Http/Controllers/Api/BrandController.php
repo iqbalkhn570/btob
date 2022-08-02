@@ -1,9 +1,9 @@
 <?php
      
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\Api;
      
 use Illuminate\Http\Request;
-use App\Http\Controllers\API\BaseController as BaseController;
+use App\Http\Controllers\Api\BaseController as BaseController;
 use App\Models\Brand;
 use Validator;
 use App\Http\Resources\BrandResource;
@@ -33,7 +33,6 @@ class BrandController extends BaseController
      
         $validator = Validator::make($input, [
             'name' => 'required',
-            'detail' => 'required'
         ]);
      
         if($validator->fails()){
