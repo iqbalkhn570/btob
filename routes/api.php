@@ -2,9 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\API\AuthController;
-use App\Http\Controllers\API\BlogController;
+use App\Http\Controllers\API\BrandController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,10 +16,9 @@ use App\Http\Controllers\API\BlogController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-Route::apiResource('products', ProductController::class);
+//Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+   // return $request->user();
+//});
 
 //...
 
@@ -28,6 +26,9 @@ Route::apiResource('products', ProductController::class);
 //...
 Route::post('register', [AuthController::class, "register"]);
 Route::post('login', [AuthController::class, "login"]);
+Route::post('login', [AuthController::class, "login"]);
+Route::post('admin/login', [AuthController::class, "login"]);
+
 
 Route::group(["middleware" => ["auth:api"]], function(){
 
@@ -35,5 +36,9 @@ Route::group(["middleware" => ["auth:api"]], function(){
     Route::post("logout", [AuthController::class, "logout"]);
 });
 
-Route::apiResource('blog', BlogController::class)->middleware('auth:api');
+
+
+Route::middleware('auth:api')->group( function () {
+    Route::resource('brands', BrandController::class);
+});
 
