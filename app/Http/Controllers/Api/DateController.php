@@ -15,7 +15,7 @@ class DateController extends BaseController
      */
     public function index()
     {
-        
+            try {
             $count = 7;
             $dates = [];
             $date = Carbon::now();
@@ -25,9 +25,17 @@ class DateController extends BaseController
                     $dates[] = $mainDate->format('l, d M');
                 }
             }
+            } catch (Exception $e) {
+                $message = $e->getMessage();
+                var_dump('Exception Message: '. $message);
+                $code = $e->getCode();       
+                var_dump('Exception Code: '. $code);
+                $string = $e->__toString();       
+                var_dump('Exception String: '. $string);
+                exit;
+            }
             return $this->sendResponse($dates, 'Dates retrieved successfully.');
         
     }
-
     
 }
