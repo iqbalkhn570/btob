@@ -43,13 +43,14 @@ Route::group(["middleware" => ["auth:api"]], function(){
 
 
 Route::middleware('auth:api')->group( function () {
-    Route::resource('brands', BrandController::class);
-    Route::resource('bussinesses', BussinessController::class);
-    Route::get("switchoffon", [SwitchoffonController::class, "index"]);
-
-    Route::get("odds-settings", [OddsSettingController::class, "index"]);
-    Route::get("odds-settings/rate-setting-detail/{company_id}", [OddsSettingController::class, "rateSettingDetail"]);
-    Route::get("odds-settings/commission-setting-detail/{company_id}", [OddsSettingController::class, "commissionSettingDetail"]);
-    Route::get("odds-settings/popular-number-setting", [OddsSettingController::class, "popularNumberList"]);
+    
 });
 Route::get("dates", [DateController::class, "index"]);
+Route::resource('brands', BrandController::class);
+Route::resource('bussinesses', BussinessController::class);
+Route::get("switchoffon", [SwitchoffonController::class, "index"]);
+
+Route::get("odds-settings", [OddsSettingController::class, "index"]);
+Route::get("odds-settings/rate-setting-detail/{company_id}", [OddsSettingController::class, "rateSettingDetail"]);
+Route::get("odds-settings/commission-setting-detail/{company_id}", [OddsSettingController::class, "commissionSettingDetail"]);
+Route::get("odds-settings/popular-number-setting", [OddsSettingController::class, "popularNumberList"]);
