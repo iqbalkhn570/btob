@@ -129,7 +129,7 @@ class HomeController extends Controller
                 ->whereBetween('created_at', [$dateFrom.' 00:00:00', $dateTo.' 23:59:59'])
                 ->groupBy('bussiness_entity_id')
                 ->first();
-        
+       
         return view('admin.home')->with(array('company'=>$data,'selectCountry'=>$selectBrand,"dashboardData"=>$dashboardData,'daysArr'=>$daysArr,'turnoverArr'=>$turnoverArr,'graphFor'=>$graphFor,'chartColor'=>$chartColor));
     }
 }

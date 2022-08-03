@@ -56,6 +56,7 @@
 
                     </select>
                </div>
+               <input type="hidden" name="chart_for" id="chart_for">
           </div>
       
        </div>
