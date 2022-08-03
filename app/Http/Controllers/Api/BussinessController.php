@@ -5,11 +5,12 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Api\BaseController;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\BussinessResorce;
+use App\Models\Brand;
 use App\Models\Company;
 use Illuminate\Http\Request;
 use Validator;
 use Illuminate\Support\Str;
-
+use DB;
 class BussinessController extends BaseController
 {
     /**
@@ -55,16 +56,17 @@ class BussinessController extends BaseController
      */
     public function show($id)
     {
-        $bussiness = Company::with(['brands'=> function($query){
-                                $query->select('brands.id','brands.name','brands.image')
-                                        ->where('brands.status','enabled')
-                                        ->orderBy('brands.name','ASC')
-                                        ->withPivot('status');
-                            }])
-                            ->whereId($id)
+        $url = url('').'/public/frontend/images/brand/';
+        $bussiness = Company::whereId($id)
                             ->select('companies.id','companies.name')
                             ->first();
-    
+        $brands = Brand::join('brand_company','brands.id','=','brand_company.brand_id')
+                            ->select('brands.id','brands.name',DB::Raw("CONCAT('$url',image) AS image"),'brand_company.status')
+                            ->whereCompanyId($id)
+                            ->orderBy('brands.name','ASC')
+                            ->where('brands.status', 'enabled')
+                            ->get();
+        $bussiness['brands'] = $brands;  
 
         if (is_null($bussiness)) {
             return $this->sendError('Brand not found.');
