@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\BrandController;
 use App\Http\Controllers\Api\BussinessController;
 use App\Http\Controllers\Api\OddsSettingController;
 use App\Http\Controllers\Api\SwitchoffonController;
+use App\Http\Controllers\Api\DateController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,4 +52,4 @@ Route::middleware('auth:api')->group( function () {
     Route::get("odds-settings/commission-setting-detail/{company_id}", [OddsSettingController::class, "commissionSettingDetail"]);
     Route::get("odds-settings/popular-number-setting", [OddsSettingController::class, "popularNumberList"]);
 });
-
+Route::get("dates", [DateController::class, "index"]);

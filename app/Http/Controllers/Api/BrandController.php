@@ -100,4 +100,5 @@ class BrandController extends BaseController
      
         return $this->sendResponse([], 'Brands deleted successfully.');
     }
+    
 }
