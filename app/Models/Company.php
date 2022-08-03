@@ -17,6 +17,10 @@ class Company extends Model
      * @var array
      */
     protected $fillable = [
-        'name'
+        'name','slug'
     ];
+
+    public function brands (){
+        return $this->belongsToMany(Brand::class, 'brand_company')->withPivot('status');
+    }
 }

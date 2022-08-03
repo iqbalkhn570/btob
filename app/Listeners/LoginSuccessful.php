@@ -58,7 +58,7 @@ if($data!=""){
   if (!empty(auth()->user()->id)) {
   DB::table('activity_logs')->insert([
     'uid'    => auth()->user()->id,
-    'source'   =>$result,
+    'source'   =>isset($result) ? $result : 'Desktop',
     'countryName'   => $data->countryName,
     'countryCode'   => $data->countryCode,
     'regionCode'   => $data->regionCode,
