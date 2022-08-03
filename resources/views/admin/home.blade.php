@@ -35,7 +35,7 @@
         <div class="col-md-8 ">Filter</div>
         <div class="col-md-2 ">
         <div class="form-control">
-                     <div class="input-group" style="margin-top:-3px;">
+                     <div class="input-group" style="margin-top:-3px;"> 
                         <div class="input-group-prepend">
                             <span class="input-group-text">
                               <i class="far fa-calendar-alt"></i>
