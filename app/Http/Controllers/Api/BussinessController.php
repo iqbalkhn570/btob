@@ -56,7 +56,7 @@ class BussinessController extends BaseController
     public function show($id)
     {
         $bussiness = Company::with(['brands'=> function($query){
-                                $query->select('brands.id','brands.name')
+                                $query->select('brands.id','brands.name','brands.image')
                                         ->where('brands.status','enabled')
                                         ->orderBy('brands.name','ASC')
                                         ->withPivot('status');
