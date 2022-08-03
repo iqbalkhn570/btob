@@ -67,7 +67,7 @@ class BussinessController extends BaseController
     
 
         if (is_null($bussiness)) {
-            return $this->sendError('Brand not found.');
+            return $this->sendError('not found.');
         }
      
         return $this->sendResponse($bussiness, 'Bussiness retrieved successfully.');
