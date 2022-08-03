@@ -29,6 +29,39 @@
       <div class="container-fluid">
 
       <div class="card card-default">
+      <form  method="get" action="" id="search_brands" >
+       <div class="row m-2">
+       
+        <div class="col-md-8 ">Filter</div>
+        <div class="col-md-2 ">
+        <div class="form-control">
+                     <div class="input-group" style="margin-top:-3px;">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">
+                              <i class="far fa-calendar-alt"></i>
+                            </span>
+                        </div>
+                       <input type="text" class="form-control  form-control-sm float-right"  name="filter_date_range" id="filter_date_range" value="{{ request()->input('filter_date_range')  }}">
+                     </div>
+                     <!-- /.input group -->
+                  </div>
+        </div>
+        <div class="col-md-2"> 
+          <div class="form-group ">
+                  <select class="form-control " name="brands" onchange="this.form.submit()">
+                       @foreach($company as $row)
+
+                      <option value="{{ $row->id }}" {{ $selectCountry == $row->id ? 'selected' : '' }}>{{ $row->name }}</option>
+                      @endforeach
+
+                    </select>
+               </div>
+          </div>
+      
+       </div>
+       </form> 
+</div>
+      <!-- <div class="card card-default">
           <div class="card-header">
             <h3 class="card-title">Filters</h3>
 
@@ -44,9 +77,9 @@
                         </div>
                        <input type="text" class="form-control  form-control-sm float-right"  name="filter_date_range" id="filter_date_range" value="{{ request()->input('filter_date_range')  }}">
                      </div>
-                     <!-- /.input group -->
+                    
                   </div>
-              </div>
+               </div>
               <div class="form-group col-md-6 d-flex">
                   <select class="form-control " name="brands" onchange="this.form.submit()">
                        @foreach($company as $row)
@@ -61,10 +94,10 @@
             </div>
 
           </div>
-          <!-- /.card-header -->
+          
 
 
-        </div>
+        </div> -->
 
         <div class="row">
           <div class="col-lg-3 col-6 tabclss" style="cursor:pointer">
