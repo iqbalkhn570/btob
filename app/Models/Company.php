@@ -21,6 +21,6 @@ class Company extends Model
     ];
 
     public function brands (){
-        return $this->belongsToMany(Brand::class, 'brand_company')->withPivot('status');
+        return $this->belongsToMany(Brand::class, 'brand_company');
     }
 }

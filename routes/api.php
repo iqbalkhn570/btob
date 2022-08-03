@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BrandController;
 use App\Http\Controllers\Api\BussinessController;
+use App\Http\Controllers\Api\OddsSettingController;
 use App\Http\Controllers\Api\SwitchoffonController;
 
 /*
@@ -45,5 +46,9 @@ Route::middleware('auth:api')->group( function () {
     Route::resource('bussinesses', BussinessController::class);
     Route::get("switchoffon", [SwitchoffonController::class, "index"]);
 
+    Route::get("odds-settings", [OddsSettingController::class, "index"]);
+    Route::get("odds-settings/rate-setting-detail/{company_id}", [OddsSettingController::class, "rateSettingDetail"]);
+    Route::get("odds-settings/commission-setting-detail/{company_id}", [OddsSettingController::class, "commissionSettingDetail"]);
+    Route::get("odds-settings/popular-number-setting", [OddsSettingController::class, "popularNumberList"]);
 });
 

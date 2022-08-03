@@ -55,13 +55,22 @@ class BussinessController extends BaseController
      */
     public function show($id)
     {
-        $bussiness = Company::find($id);
+        $bussiness = Company::with(['brands'=> function($query){
+                                $query->select('brands.id','brands.name')
+                                        ->where('brands.status','enabled')
+                                        ->orderBy('brands.name','ASC')
+                                        ->withPivot('status');
+                            }])
+                            ->whereId($id)
+                            ->select('companies.id','companies.name')
+                            ->first();
     
+
         if (is_null($bussiness)) {
             return $this->sendError('Brand not found.');
         }
      
-        return $this->sendResponse(new BussinessResorce($bussiness), 'Bussiness retrieved successfully.');
+        return $this->sendResponse($bussiness, 'Bussiness retrieved successfully.');
     }
     
     /**

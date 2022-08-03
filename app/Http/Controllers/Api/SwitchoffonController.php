@@ -17,12 +17,13 @@ class SwitchoffonController extends BaseController
     public function index()
     {
         $companies  = Company::where('companies.status', '=', 'enabled')
-                        ->with(['brands'=> function($query){
-                            $query->select('brands.id','brands.name')
-                                    ->where('brands.status','enabled')
-                                    ->orderBy('brands.name','DESC');
-                        }])
-                        ->select('companies.id','companies.name')
+                        // ->with(['brands'=> function($query){
+                        //     $query->select('brands.id','brands.name')
+                        //             ->where('brands.status','enabled')
+                        //             ->orderBy('brands.name','DESC')
+                        //             ->withPivot('first_prize','second_prize','status');
+                        // }])
+                        ->select('companies.id','companies.name')                       
                         ->orderBy('companies.name', 'ASC')->get();
         return $this->sendResponse($companies, 'Comapanies retrieved successfully.');
     }
