@@ -12,7 +12,7 @@ class Brand extends Model
     use HasFactory;
     use Loggable;
     use Sortable;
-    use  SoftDeletes;
+    use SoftDeletes;
     /**
      * The attributes that are mass assignable.
      *	

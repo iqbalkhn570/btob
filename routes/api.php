@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BrandController;
 use App\Http\Controllers\Api\BussinessController;
 use App\Http\Controllers\Api\SwitchoffonController;
+use App\Http\Controllers\Api\DateController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,4 +47,4 @@ Route::middleware('auth:api')->group( function () {
     Route::get("switchoffon", [SwitchoffonController::class, "index"]);
 
 });
-
+Route::get("dates", [DateController::class, "index"]);
