@@ -29,9 +29,10 @@ class Brand extends Model
             return false;
         }
     }
-    public function setImageAttribute($value)
+   /* public function setImageAttribute($value)
     {
         $this->attributes['image'] = public_path('/frontend/images/brand/'.$value);
     }
+    */
 
 }
