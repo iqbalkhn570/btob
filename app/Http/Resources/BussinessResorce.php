@@ -17,9 +17,10 @@ class BussinessResorce extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'slug' => $this->slug,
-            'created_at' => $this->created_at->format('d/m/Y'),
-            'updated_at' => $this->updated_at->format('d/m/Y'),
+            'status' => $this->status,
+            // 'slug' => $this->slug,
+            // 'created_at' => $this->created_at->format('d/m/Y'),
+            // 'updated_at' => $this->updated_at->format('d/m/Y'),
         ];
     }
 }
