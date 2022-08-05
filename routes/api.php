@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\BussinessController;
 use App\Http\Controllers\Api\OddsSettingController;
 use App\Http\Controllers\Api\SwitchoffonController;
 use App\Http\Controllers\Api\DateController;
+use App\Http\Controllers\Api\LotteryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,3 +55,5 @@ Route::get("odds-settings", [OddsSettingController::class, "index"]);
 Route::get("odds-settings/rate-setting-detail/{company_id}", [OddsSettingController::class, "rateSettingDetail"]);
 Route::get("odds-settings/commission-setting-detail/{company_id}", [OddsSettingController::class, "commissionSettingDetail"]);
 Route::get("odds-settings/popular-number-setting", [OddsSettingController::class, "popularNumberList"]);
+
+Route::post("lottery-store", [LotteryController::class, "store"]);
