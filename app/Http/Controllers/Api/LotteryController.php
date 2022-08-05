@@ -29,20 +29,22 @@ class LotteryController extends BaseController
      */
     public function store(Request $request)
     {
-        $input = $request->all();
-        print_r($input);die;
+        // return $this->sendResponse('success', 'Brand created successfully.');
+        return $request->all();
+        // $input = $request->all();
+        // print_r($input);die;
      
-        $validator = Validator::make($input, [
-            //'number_pattern' => 'required',
-        ]);
+        // $validator = Validator::make($input, [
+        //     //'number_pattern' => 'required',
+        // ]);
      
-        if($validator->fails()){
-            return $this->sendError('Validation Error.', $validator->errors());       
-        }
+        // if($validator->fails()){
+        //     return $this->sendError('Validation Error.', $validator->errors());       
+        // }
      
-        $lottery = Lottery::create($input);
+        // $lottery = Lottery::create($input);
      
-        return $this->sendResponse(new LotteryResource($lottery), 'Lottery created successfully.');
+        // return $this->sendResponse(new LotteryResource($lottery), 'Lottery created successfully.');
     } 
    
    
