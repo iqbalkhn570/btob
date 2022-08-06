@@ -33,13 +33,9 @@ class LotteryController extends BaseController
      */
     public function store(Request $request)
     {
-        $payLoad = json_decode(request()->getContent(), true);
-    
-        if(! $payLoad){
-            return $this->sendError('Validation Error.');       
-        }
-        $validator = Validator::make($payLoad, [
-            'dates' => 'required|array', //Must be a number and length of value is 8
+        
+        $validator = Validator::make($request->all(), [
+            'dates' => 'required|array',
             'games' => 'required|array',
             'datas' => 'required|array'
         ]);
@@ -53,9 +49,9 @@ class LotteryController extends BaseController
         DB::beginTransaction();
         try {
             //code...
-            $dates = $payLoad['dates'];
-            $games = $payLoad['games'];
-            $datas = $payLoad['datas'];
+            $dates = $request->dates;
+            $games = $request->games;
+            $datas = $request->datas;
             $referenceNum = Str::uuid()->toString().'/'.Carbon::now()->year.'/REF';
             foreach ($datas as $key => $value) {
                 # code...
