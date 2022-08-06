@@ -58,7 +58,7 @@ class BussinessController extends BaseController
     {
         $url = url('').'/public/frontend/images/brand/';
         $bussiness = Company::whereId($id)
-                            ->select('companies.id','companies.name')
+                            ->select('companies.id','companies.name','companies.commission')
                             ->first();
         $brands = Brand::join('brand_company','brands.id','=','brand_company.brand_id')
                             ->select('brands.id','brands.name',DB::Raw("CONCAT('$url',image) AS image"),'brand_company.status')

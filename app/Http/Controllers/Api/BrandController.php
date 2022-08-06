@@ -29,6 +29,7 @@ class BrandController extends BaseController
      */
     public function store(Request $request)
     {
+        // die('============');
         $input = $request->all();
      
         $validator = Validator::make($input, [
