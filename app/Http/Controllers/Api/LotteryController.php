@@ -14,6 +14,8 @@ use Illuminate\Support\Str;
 
 class LotteryController extends BaseController
 {
+
+    private $result=[];
     /**
      * Display a listing of the resource.
      *
@@ -33,6 +35,7 @@ class LotteryController extends BaseController
      */
     public function store(Request $request)
     {
+        
         $validator = Validator::make($request->all(), [
             'dates' => 'required|array',
             'games' => 'required|array',
@@ -59,6 +62,7 @@ class LotteryController extends BaseController
             //
             foreach ($datas as $key => $value) {
                 # code...
+                $this->result = [];
                 $lotteryData['reference_number'] = $referenceNum;
                 $lotteryData['customer_id'] = $customerId;
                 $lotteryData['company_id'] = $companyId;
@@ -86,27 +90,53 @@ class LotteryController extends BaseController
                         $formatedDate = Carbon::createFromFormat('l, d M',$date)->format('Y-m-d');
                         $slaveData['game_date'] = $formatedDate;
 
-                        $slaveData['lottery_number'] = $lottery->number_pattern;
+                        
+                        //foreach($datas as $key=>$row){
 
+                           
 
-                        $str = $lottery->number_pattern;
+                              if(@$value['box']=='on' || @$value['ibox']=='on'){
+                               
+                                $str = @$value['number'];
                    
-                        $n = strlen($str);
+                                $n = strlen($str);
+                                    
+                                
+                                $this->permute($str, 0, $n - 1);
+                                
+                                $temp = [];
+                                for($j=0; $j<count($this->result); $j++){
+                                    if(!in_array($this->result[$j],$temp)){
+                                    array_push($temp,$this->result[$j]);
+                                    
+                                    }
+                                }
+                                
+                                if(@$value['box']=='on'){
 
-                        $result = [];
-                        $this->permute($str, 0, $n - 1);
-                        print_r($result);die;
-                        $temp = [];
-                        for($j=0; $j<count($result); $j++){
-                            if(!in_array($result[$j],$temp)){
-                            array_push($temp,$result[$j]);
-                            
-                            }
-                        }
+                                    $slaveData['amount'] = @$value['amount'];
+                                }else{
+                                    $slaveData['amount'] = @$value['amount']/count($temp);
+                                }
+                                
+                                foreach($temp as $key=>$row){
+                                    //die('khan');
+                                    $slaveData['lottery_number'] = $row;
+                                    DB::table('customer_lotteries_slave')->insert($slaveData);
+                                }
+                              }else{
+                                $slaveData['amount'] = @$value['amount'];
+                                DB::table('customer_lotteries_slave')->insert($slaveData);
+                              }
+                              
+                                
 
-                        print_r($temp);die;
+                       // }
 
-                        DB::table('customer_lotteries_slave')->insert($slaveData);
+
+                        
+                        
+                        
 
 
                     }
@@ -115,6 +145,7 @@ class LotteryController extends BaseController
             }
 
         } catch (\Throwable $th) {
+           
             return $this->sendError('Store data error.',$th);       
 
         }
@@ -129,12 +160,13 @@ class LotteryController extends BaseController
     str string to calculate permutation
     for @param l starting index @param
     r end index */
+    
     function permute($str, $l, $r)
     { 
-        global $result;
+       
         if ($l == $r){
             //echo $str. "\n";
-            $result[] = $str;
+            $this->result[] = $str;
         }
         else{
             for ($i = $l; $i <= $r; $i++)
@@ -144,7 +176,7 @@ class LotteryController extends BaseController
                 $str = $this->swap($str, $l, $i);
             }
         }
-        return $result;
+        //return $result;
     }
 
     /* Swap Characters at position @param
