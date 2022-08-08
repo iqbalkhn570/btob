@@ -93,51 +93,40 @@ class LotteryController extends BaseController
                         
                         //foreach($datas as $key=>$row){
 
-                           
-
-                              if(@$value['box']=='on' || @$value['ibox']=='on'){
-                               
-                                $str = @$value['number'];
-                   
-                                $n = strlen($str);
-                                    
+                        if(@$value['box']=='on' || @$value['ibox']=='on'){
+                        
+                            $str = @$value['number'];
+                
+                            $n = strlen($str);
                                 
-                                $this->permute($str, 0, $n - 1);
-                                
-                                $temp = [];
-                                for($j=0; $j<count($this->result); $j++){
-                                    if(!in_array($this->result[$j],$temp)){
+                            
+                            $this->permute($str, 0, $n - 1);
+                            
+                            $temp = [];
+                            for($j=0; $j<count($this->result); $j++){
+                                if(!in_array($this->result[$j],$temp)){
                                     array_push($temp,$this->result[$j]);
-                                    
-                                    }
-                                }
                                 
-                                if(@$value['box']=='on'){
+                                }
+                            }
+                            
+                            if(@$value['box']=='on'){
 
-                                    $slaveData['amount'] = @$value['amount'];
-                                }else{
-                                    $slaveData['amount'] = @$value['amount']/count($temp);
-                                }
-                                
-                                foreach($temp as $key=>$row){
-                                    //die('khan');
-                                    $slaveData['lottery_number'] = $row;
-                                    DB::table('customer_lotteries_slave')->insert($slaveData);
-                                }
-                              }else{
                                 $slaveData['amount'] = @$value['amount'];
+                            }else{
+                                $slaveData['amount'] = @$value['amount']/count($temp);
+                            }
+                            
+                            foreach($temp as $key=>$row){
+                                //die('khan');
+                                $slaveData['lottery_number'] = $row;
                                 DB::table('customer_lotteries_slave')->insert($slaveData);
-                              }
-                              
-                                
-
+                            }
+                        }else{
+                            $slaveData['amount'] = @$value['amount'];
+                            DB::table('customer_lotteries_slave')->insert($slaveData);
+                        }
                        // }
-
-
-                        
-                        
-                        
-
 
                     }
                     
