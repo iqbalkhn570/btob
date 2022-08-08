@@ -26,7 +26,7 @@ class DateController extends BaseController
                     if($mainDate->format('l') == 'Saturday' || $mainDate->format('l') == 'Sunday' || $mainDate->format('l') == 'Wednesday'){
                         $temp = [];
                         $temp['id'] = $tempCount;
-                        $temp['day'] = $mainDate->format('l, d M');
+                        $temp['day'] = $mainDate->format('d M, l');
                         //$tempArr[] = $mainDate->format('l, d M');
                         $tempArr[] = $temp;
                         $tempCount++;
