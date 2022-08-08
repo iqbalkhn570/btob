@@ -46,12 +46,17 @@ class LotteryController extends BaseController
         $companyId = 2;
 
         DB::beginTransaction();
+        
         try {
             //code...
             $dates = $request->dates;
             $games = $request->games;
             $datas = $request->datas;
             $referenceNum = Str::uuid()->toString().'/'.Carbon::now()->year.'/REF';
+
+            //
+             // we have to write a code for genrating numbers for lottery 
+            //
             foreach ($datas as $key => $value) {
                 # code...
                 $lotteryData['reference_number'] = $referenceNum;
@@ -82,7 +87,28 @@ class LotteryController extends BaseController
                         $slaveData['game_date'] = $formatedDate;
 
                         $slaveData['lottery_number'] = $lottery->number_pattern;
+
+
+                        $str = $lottery->number_pattern;
+                   
+                        $n = strlen($str);
+
+                        $result = [];
+                        $this->permute($str, 0, $n - 1);
+                        print_r($result);die;
+                        $temp = [];
+                        for($j=0; $j<count($result); $j++){
+                            if(!in_array($result[$j],$temp)){
+                            array_push($temp,$result[$j]);
+                            
+                            }
+                        }
+
+                        print_r($temp);die;
+
                         DB::table('customer_lotteries_slave')->insert($slaveData);
+
+
                     }
                     
                 }
@@ -93,10 +119,47 @@ class LotteryController extends BaseController
 
         }
         DB::commit();
-
-     
         return $this->sendResponse([], 'Lottery created successfully.');
     } 
+
+    // PHP program to print all
+    // permutations of a given string.
+
+    /* Permutation function @param
+    str string to calculate permutation
+    for @param l starting index @param
+    r end index */
+    function permute($str, $l, $r)
+    { 
+        global $result;
+        if ($l == $r){
+            //echo $str. "\n";
+            $result[] = $str;
+        }
+        else{
+            for ($i = $l; $i <= $r; $i++)
+            {
+                $str = $this->swap($str, $l, $i);
+                $this->permute($str, $l + 1, $r);
+                $str = $this->swap($str, $l, $i);
+            }
+        }
+        return $result;
+    }
+
+    /* Swap Characters at position @param
+    a string value @param i position 1
+    @param j position 2 @return swapped
+    string */
+    function swap($a, $i, $j)
+    {
+        $charArray = str_split($a);
+        $temp = $charArray[$i] ;
+        $charArray[$i] = $charArray[$j];
+        $charArray[$j] = $temp;
+        return implode($charArray);
+    }
+
    
    
     
