@@ -12,7 +12,7 @@ class Lottery extends Model
     use HasFactory;
     use Loggable;
     use Sortable;
-    use SoftDeletes;
+    // use SoftDeletes;
     protected $table="customer_lotteries";
     /**
      * The attributes that are mass assignable.

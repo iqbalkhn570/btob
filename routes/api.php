@@ -57,3 +57,4 @@ Route::get("odds-settings/commission-setting-detail/{company_id}", [OddsSettingC
 Route::get("odds-settings/popular-number-setting", [OddsSettingController::class, "popularNumberList"]);
 
 Route::post("lottery-store", [LotteryController::class, "store"]);
+Route::get("lottery-show/{customer_id}", [LotteryController::class, "show"]);
