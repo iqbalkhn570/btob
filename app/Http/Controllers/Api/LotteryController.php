@@ -72,9 +72,9 @@ class LotteryController extends BaseController
                 $lotteryData['small_bet_amount'] = @$value['small_bet'];
 
                 $boxType = '2';
-                if( @$value['box'] )
+                if( @$value['box'] == 'on' )
                     $boxType = '0';
-                elseif( @$value['ibox'] )
+                elseif( @$value['ibox'] == 'on')
                     $boxType = '1';
                 $lotteryData['bet_type'] = $boxType;
 
@@ -183,6 +183,12 @@ class LotteryController extends BaseController
     }
     public function show($id)
     {
+        $c = DB::table('companies')
+               ->join('customer_lotteries','companies.id','=','customer_lotteries.company_id')
+               ->where('companies.id','=','2')
+               ->get();
+
+        return $c;
         $customerId = $id;
         $lotteries = DB::table('customer_lotteries')
                                 ->join('customer_lotteries_slave','customer_lotteries.id','=','customer_lotteries_slave.customer_lottery_id')
