@@ -207,6 +207,7 @@ class LotteryController extends BaseController
 
             $games->map(function($game) use($customerId, $lottery){
                 $lotteryDatas = Lottery::join('customer_lotteries_slave','customer_lotteries.id','=','customer_lotteries_slave.customer_lottery_id')
+                                ->join('companies','customer_lotteries.company_id','=','companies.id')
                                 ->where('customer_lotteries.customer_id',$customerId)
                                 ->where('customer_lotteries_slave.game_date',$lottery->date)
                                 ->where('customer_lotteries_slave.game_id',$game->game_id)
@@ -218,7 +219,8 @@ class LotteryController extends BaseController
                                     'customer_lotteries.small_bet_amount',
                                     'customer_lotteries.bet_type',
                                     'customer_lotteries.total_amount',
-                                    'customer_lotteries.number_pattern',
+                                    'companies.commission',
+                                    DB::raw("total_amount + (total_amount * companies.commission/100) AS net_amount"),
                                 )
                                 ->get();
                 $game->lotteries = $lotteryDatas;
