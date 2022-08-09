@@ -11,6 +11,7 @@ use App\Models\Brand;
 use Faker\Core\Uuid;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class LotteryController extends BaseController
@@ -136,6 +137,7 @@ class LotteryController extends BaseController
 
         } catch (\Throwable $th) {
            
+            Log::error($th);
             return $this->sendError('Store data error.',$th);       
 
         }
