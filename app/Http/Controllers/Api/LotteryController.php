@@ -89,7 +89,7 @@ class LotteryController extends BaseController
                         # code...
                         $slaveData['customer_lottery_id'] = $lottery->id;
                         $slaveData['game_id'] = $game;
-                        $formatedDate = Carbon::createFromFormat('l, d M',$date)->format('Y-m-d');
+                        $formatedDate = Carbon::createFromFormat('d M, l',$date)->format('Y-m-d');
                         $slaveData['game_date'] = $formatedDate;
 
                         
