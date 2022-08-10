@@ -15,14 +15,15 @@ class BaseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function sendResponse($result, $message)
+    public function sendResponse($result, $message, $more_fields = [])
     {
     	$response = [
             'success' => true,
             'data'    => $result,
             'message' => $message,
         ];
-
+        if(!empty($more_fields))
+            $response = array_merge($response, $more_fields);
 
         return response()->json($response, 200);
     }
