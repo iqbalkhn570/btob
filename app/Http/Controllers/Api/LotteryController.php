@@ -225,7 +225,10 @@ class LotteryController extends BaseController
                                     'companies.commission',
                                     DB::raw("total_amount + (total_amount * companies.commission/100) AS net_amount"),
                                 )
-                                ->get();
+                                ->get()
+                                ->each(function ($row, $index) {
+                                    $row->srno = $index + 1;
+                                });
                 $game->lotteries = $lotteryDatas;
             });
             $lottery->games = $games;
