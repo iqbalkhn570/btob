@@ -88,9 +88,13 @@ class LotteryController extends BaseController
                 foreach ($games as $key => $game) {
                     foreach ($dates as $key => $date) {
                         # code...
+                        
                         $slaveData['customer_lottery_id'] = $lottery->id;
                         $slaveData['game_id'] = $game;
+                        
                         $formatedDate = Carbon::createFromFormat('d M, l',$date)->format('Y-m-d');
+                       // $formatedDate = Carbon::parse($date)->format('Y-m-d');
+                        //die($formatedDate);
                         $slaveData['game_date'] = $formatedDate;
 
                         
