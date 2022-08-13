@@ -59,4 +59,5 @@ Route::get("odds-settings/popular-number-setting", [OddsSettingController::class
 Route::post("lottery-store", [LotteryController::class, "store"]);
 Route::get("lottery-show/{customer_id}", [LotteryController::class, "show"]);
 Route::get("lottery-filter/{customer_id}", [LotteryController::class, "filter"]);
+Route::get("lottery-delete/{id}", [LotteryController::class, "destroy"]);
 Route::get("lottery-slave-list", [LotteryController::class, "lotterySlaveList"]);
