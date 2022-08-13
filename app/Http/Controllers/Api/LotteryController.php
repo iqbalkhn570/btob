@@ -122,17 +122,18 @@ class LotteryController extends BaseController
                                 $slaveData['amount'] = @$value['amount'];
                             }
                             else{
-                                $slaveData['amount'] = @$value['amount']/count($temp);
+                                $slaveData['amount'] =round( @$value['amount']/count($temp), 2);
                             }
                             
                             foreach($temp as $key=>$row){
                                 //die('khan');
                                 $slaveData['lottery_number'] = $row;
                                 $slaveData['commission'] = $company->commission;
-                                $slaveData['net_amount'] = $slaveData['amount']+($slaveData['amount']*$company->commission/100) ;
+                                $slaveData['net_amount'] = round ($slaveData['amount']+($slaveData['amount']*$company->commission/100), 2) ;
                                 DB::table('customer_lotteries_slave')->insert($slaveData);
                             }
                         }else{
+                            $slaveData['lottery_number'] =@$value['number'];
                             $slaveData['amount'] = @$value['amount'];
                             $slaveData['commission'] = $company->commission;
                             $slaveData['net_amount'] = $slaveData['amount']+($slaveData['amount']*$company->commission/100);
@@ -205,6 +206,12 @@ class LotteryController extends BaseController
                                 ->groupBy('customer_lotteries_slave.game_date')
                                 ->orderBy('customer_lotteries_slave.game_date','DESC')
                                 ->get();
+        
+        $x = 1;
+        foreach($lotteries as $key=> $lotteriesVal){
+            $lotteries[$key]->id = $x;
+            $x++;
+        }
         $lotteries->map(function ($lottery) use($customerId)
         {
             # code...
@@ -218,7 +225,11 @@ class LotteryController extends BaseController
                             ->where('customer_lotteries.customer_id',$customerId)
                             ->where('customer_lotteries_slave.game_date',$lottery->date)
                             ->get();
-
+            $y = 1;
+            foreach($games as $key=> $gamesVal){
+                $games[$key]->id = $y;
+                $y++;
+            }
             $games->map(function($game) use($customerId, $lottery){
                 $lotteryDatas = Lottery::join('customer_lotteries_slave','customer_lotteries.id','=','customer_lotteries_slave.customer_lottery_id')
                                 ->join('companies','customer_lotteries.company_id','=','companies.id')
