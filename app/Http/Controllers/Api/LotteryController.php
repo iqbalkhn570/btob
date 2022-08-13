@@ -134,7 +134,8 @@ class LotteryController extends BaseController
                             }
                         }else{
                             $slaveData['amount'] = @$value['amount'];
-                            $slaveData['amount'] = $slaveData['amount']+($slaveData['amount']*$company->commission/100);
+                            $slaveData['commission'] = $company->commission;
+                            $slaveData['net_amount'] = $slaveData['amount']+($slaveData['amount']*$company->commission/100);
                             DB::table('customer_lotteries_slave')->insert($slaveData);
                         }
                        // }
@@ -152,62 +153,7 @@ class LotteryController extends BaseController
         }
         DB::commit();
 
-        //geting lottery history data
-        $lotteries = DB::table('customer_lotteries')
-                                ->join('customer_lotteries_slave','customer_lotteries.id','=','customer_lotteries_slave.customer_lottery_id')
-                                ->where('customer_lotteries.customer_id',$customerId)
-                                ->whereIn('customer_lotteries.id',$customerLottteryIds)
-                                ->select('customer_lotteries_slave.game_date as date')
-                                ->groupBy('customer_lotteries_slave.game_date')
-                                ->orderBy('customer_lotteries_slave.game_date','DESC');
-
-
-        $lotteries = $lotteries->get();
-
-        
-        $lotteries->map(function ($lottery) use($customerId, $customerLottteryIds)
-        {
-            # code...
-            $lottery->day_name = Carbon::createFromFormat('Y-m-d', $lottery->date)->format('d M, l');
-
-            //getting game list with lottery list
-            $games = Brand::join('customer_lotteries_slave','customer_lotteries_slave.game_id','=','brands.id')
-                            ->join('customer_lotteries','customer_lotteries_slave.customer_lottery_id','=','customer_lotteries.id')
-                            ->distinct('game_name')
-                            ->select('brands.name as game_name','brands.id as game_id')
-                            ->where('customer_lotteries.customer_id',$customerId)
-                            ->whereIn('customer_lotteries.id',$customerLottteryIds)
-                            ->where('customer_lotteries_slave.game_date',$lottery->date);
-
-            $games = $games->get();
-
-            $games->map(function($game) use($customerId, $lottery, $customerLottteryIds){
-                $lotteryDatas = Lottery::join('customer_lotteries_slave','customer_lotteries.id','=','customer_lotteries_slave.customer_lottery_id')
-                                ->join('companies','customer_lotteries.company_id','=','companies.id')
-                                ->where('customer_lotteries.customer_id',$customerId)
-                                ->where('customer_lotteries_slave.game_date',$lottery->date)
-                                ->where('customer_lotteries_slave.game_id',$game->game_id)
-                                ->whereIn('customer_lotteries.id',$customerLottteryIds)
-                                ->distinct('customer_lotteries.id')
-                                ->select(
-                                    'customer_lotteries.id',
-                                    'customer_lotteries.number_pattern',
-                                    'customer_lotteries.big_bet_amount',
-                                    'customer_lotteries.small_bet_amount',
-                                    'customer_lotteries.bet_type',
-                                    'customer_lotteries.total_amount',
-                                    'companies.commission',
-                                    DB::raw("total_amount + (total_amount * companies.commission/100) AS net_amount"),
-                                );
-                
-                $lotteryDatas = $lotteryDatas->get();
-
-                $game->lotteries = $lotteryDatas;
-            });
-            $lottery->games = $games;
-
-        });
-        return $this->sendResponse($lotteries, 'Lottery created successfully.',['reference_number' => $referenceNum]);
+        return $this->sendResponse([], 'Lottery created successfully.',['reference_number' => $referenceNum]);
     } 
 
     // PHP program to print all
@@ -411,6 +357,63 @@ class LotteryController extends BaseController
     }
    
    
-    
+    public function lotterySlaveList(Request $request)
+    {
+        # code...
+        $customerLottteryIds = Lottery::where('reference_number', $request->reference_number)->pluck('id');
+        
+        $lotteries = DB::table('customer_lotteries_slave')
+                                ->whereIn('customer_lottery_id', $customerLottteryIds)
+                                ->select('customer_lotteries_slave.game_date as date')
+                                ->groupBy('customer_lotteries_slave.game_date')
+                                ->orderBy('customer_lotteries_slave.game_date','DESC');
+
+
+        $lotteries = $lotteries->get();
+
+        
+        $lotteries->map(function ($lottery) use( $customerLottteryIds)
+        {
+            # code...
+            $lottery->day_name = Carbon::createFromFormat('Y-m-d', $lottery->date)->format('d M, l');
+
+            //getting game list with lottery list
+            $games = Brand::join('customer_lotteries_slave','customer_lotteries_slave.game_id','=','brands.id')
+                            ->distinct('game_name')
+                            ->select('brands.name as game_name','brands.id as game_id')
+                            ->whereIn('customer_lotteries_slave.customer_lottery_id',$customerLottteryIds)
+                            ->where('customer_lotteries_slave.game_date',$lottery->date);
+
+            $games = $games->get();
+
+            $games->map(function($game) use($lottery, $customerLottteryIds){
+                $lotteryDatas = DB::table('customer_lotteries_slave')
+                                ->where('customer_lotteries_slave.game_date',$lottery->date)
+                                ->where('customer_lotteries_slave.game_id',$game->game_id)
+                                ->whereIn('customer_lottery_id',$customerLottteryIds)
+                                ->distinct('customer_lotteries_slave.lottery_number')
+                                ->select(
+                                    'customer_lotteries_slave.id',
+                                    'customer_lotteries_slave.customer_lottery_id',
+                                    'customer_lotteries_slave.game_id',
+                                    'customer_lotteries_slave.game_date',
+                                    'customer_lotteries_slave.lottery_number',
+                                    'customer_lotteries_slave.amount',
+                                    'customer_lotteries_slave.status',
+                                    'customer_lotteries_slave.net_amount',
+                                    'customer_lotteries_slave.commission',
+                                );
+                
+                $lotteryDatas = $lotteryDatas->get();
+
+                $game->lotteries = $lotteryDatas;
+            });
+            $lottery->games = $games;
+
+        });
+
+        return $lotteries;
+
+    }
     
 }
