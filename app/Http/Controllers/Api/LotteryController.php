@@ -409,6 +409,17 @@ class LotteryController extends BaseController
         });
         return $this->sendResponse($lotteries, 'Lotteries retrieved successfully.');
     }
+
+    public function destroy($id)
+    {
+        if($id) {
+            $data = DB::table('customer_lotteries_slave')->where('id',$id)->delete();
+            return $this->sendResponse([], 'Deleted successfully.');
+        }else{
+            return $this->sendError('Something Wrong');  
+        }
+       
+    }
    
    
     
