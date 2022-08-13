@@ -428,8 +428,8 @@ class LotteryController extends BaseController
             $lottery->games = $games;
 
         });
+        return $this->sendResponse($lotteries, 'Lottery slave retrieved successfully.');
 
-        return $lotteries;
 
     }
     
