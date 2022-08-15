@@ -61,3 +61,4 @@ Route::get("lottery-show/{customer_id}", [LotteryController::class, "show"]);
 Route::get("lottery-filter/{customer_id}", [LotteryController::class, "filter"]);
 Route::get("lottery-delete/{id}", [LotteryController::class, "destroy"]);
 Route::match(['get', 'post'],"/lottery-slave-list", [LotteryController::class, "lotterySlaveList"]);
+Route::get("lottery-change-status/{refid}", [LotteryController::class, "changeStatus"]);
