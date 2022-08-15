@@ -58,7 +58,7 @@ class LotteryController extends BaseController
             $dates = $request->dates;
             $games = $request->games;
             $datas = $request->datas;
-            $referenceNum = Str::uuid()->toString().'/'.Carbon::now()->year.'/REF';
+            $referenceNum = Str::uuid()->toString().'-'.Carbon::now()->year.'-REF';
             $company = Company::find($companyId);
             //
              // we have to write a code for genrating numbers for lottery 
@@ -442,6 +442,21 @@ class LotteryController extends BaseController
         return $this->sendResponse($lotteries, 'Lottery slave retrieved successfully.');
 
 
+    }
+    public function changeStatus($refid)
+    {
+        //return "test";die;
+        if($refid!="") {
+            if(DB::table('customer_lotteries')->where('reference_number',$refid)->exists()){
+                $data = DB::table('customer_lotteries')->where('reference_number', $refid)->update(['status' => 'active']);
+                return $this->sendResponse([], 'Updated successfully.');
+            }else{
+                return $this->sendError('Something Wrong'); 
+            }
+        }else{
+            return $this->sendError('Something Wrong');  
+        }
+       
     }
     
 }
