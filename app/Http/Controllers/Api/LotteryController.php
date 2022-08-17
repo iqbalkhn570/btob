@@ -367,8 +367,9 @@ class LotteryController extends BaseController
         return $this->sendResponse($lotteries, 'Lotteries retrieved successfully.');
     }
 
-    public function destroy($id)
+    public function destroy(Request $request)
     {
+        $id=$request->id; 
         if($id!="") {
             //if (DB::table('orders')->where('finalized', 1)->exists()) {
             if(DB::table('customer_lotteries_slave')->where('id',$id)->exists()){
@@ -443,9 +444,9 @@ class LotteryController extends BaseController
 
 
     }
-    public function changeStatus($refid)
+    public function changeStatus(Request $request)
     {
-        //return "test";die;
+        $refid=$request->id; 
         if($refid!="") {
             if(DB::table('customer_lotteries')->where('reference_number',$refid)->exists()){
                 $data = DB::table('customer_lotteries')->where('reference_number', $refid)->update(['status' => 'active']);
