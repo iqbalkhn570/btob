@@ -195,10 +195,9 @@ class LotteryController extends BaseController
         $charArray[$j] = $temp;
         return implode($charArray);
     }
-    public function show($id)
+    public function show($customerId)
     {
         
-        $customerId = $id;
         $lotteries = DB::table('customer_lotteries')
                                 ->join('customer_lotteries_slave','customer_lotteries.id','=','customer_lotteries_slave.customer_lottery_id')
                                 ->where('customer_lotteries.customer_id',$customerId)
@@ -232,20 +231,21 @@ class LotteryController extends BaseController
             }
             $games->map(function($game) use($customerId, $lottery){
                 $lotteryDatas = Lottery::join('customer_lotteries_slave','customer_lotteries.id','=','customer_lotteries_slave.customer_lottery_id')
-                                ->join('companies','customer_lotteries.company_id','=','companies.id')
                                 ->where('customer_lotteries.customer_id',$customerId)
                                 ->where('customer_lotteries_slave.game_date',$lottery->date)
                                 ->where('customer_lotteries_slave.game_id',$game->game_id)
-                                ->distinct('customer_lotteries.id')
+                                ->distinct('customer_lotteries_slave.lottery_number')
                                 ->select(
-                                    'customer_lotteries.id',
-                                    'customer_lotteries.number_pattern',
+                                    'customer_lotteries_slave.id',
                                     'customer_lotteries.big_bet_amount',
                                     'customer_lotteries.small_bet_amount',
                                     'customer_lotteries.bet_type',
-                                    'customer_lotteries.total_amount',
-                                    'companies.commission',
-                                    DB::raw("total_amount + (total_amount * companies.commission/100) AS net_amount"),
+                                    'customer_lotteries_slave.lottery_number',
+                                    'customer_lotteries_slave.amount',
+                                    'customer_lotteries_slave.status',
+                                    'customer_lotteries_slave.commission',
+                                    'customer_lotteries_slave.net_amount',
+                                    DB::raw("total_amount + (total_amount * customer_lotteries_slave.commission/100) AS net_amount"),
                                 )
                                 ->get()
                                 ->each(function ($row, $index) {

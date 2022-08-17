@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\OddsSettingController;
 use App\Http\Controllers\Api\SwitchoffonController;
 use App\Http\Controllers\Api\DateController;
 use App\Http\Controllers\Api\LotteryController;
+use App\Http\Controllers\Api\ResultController;
 
 /*
 |--------------------------------------------------------------------------
@@ -62,3 +63,6 @@ Route::get("lottery-filter/{customer_id}", [LotteryController::class, "filter"])
 Route::post("lottery-delete", [LotteryController::class, "destroy"]);
 Route::match(['get', 'post'],"/lottery-slave-list", [LotteryController::class, "lotterySlaveList"]);
 Route::post("lottery-change-status", [LotteryController::class, "changeStatus"]);
+Route::get("lottery-change-status/{refid}", [LotteryController::class, "changeStatus"]);
+
+Route::match(['get', 'post'],"/result-announce", [ResultController::class, "announce"]);
