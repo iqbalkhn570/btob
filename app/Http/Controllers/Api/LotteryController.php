@@ -195,10 +195,9 @@ class LotteryController extends BaseController
         $charArray[$j] = $temp;
         return implode($charArray);
     }
-    public function show($id)
+    public function show($customerId)
     {
         
-        $customerId = $id;
         $lotteries = DB::table('customer_lotteries')
                                 ->join('customer_lotteries_slave','customer_lotteries.id','=','customer_lotteries_slave.customer_lottery_id')
                                 ->where('customer_lotteries.customer_id',$customerId)
