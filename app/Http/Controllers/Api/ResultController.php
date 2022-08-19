@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\API\BaseController;
+
 use App\Http\Controllers\Controller;
 use App\Models\Result;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class ResultController extends BaseController
+class ResultController extends Controller
 {
     /**
      * Display a listing of the resource.
