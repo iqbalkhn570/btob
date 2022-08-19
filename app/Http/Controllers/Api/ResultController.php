@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Result;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator; 
+use Illuminate\Support\Facades\DB;
 
 class ResultController extends BaseController
 {
@@ -98,11 +99,14 @@ class ResultController extends BaseController
         }
 
         $date = $request->date;
+        $url = url('').'/public/frontend/images/brand/';
 
-        $result = Result::select(
+        $result = Result::leftJoin('brands', 'results.brand_id','brands.id')
+                        ->select(
                         'results.id',
                         'results.product_id',
                         'results.brand_id',
+                        DB::Raw("CONCAT('$url',image) AS image"),
                         'results.fetching_date',
                         'results.fetching_date_new',
                         'results.title',
