@@ -195,23 +195,47 @@ class LotteryController extends BaseController
         $charArray[$j] = $temp;
         return implode($charArray);
     }
-    public function show($customerId)
+    public function show(Request $request, $customerId)
     {
-        
+        $validator = Validator::make($request->all(), [
+            'date' => 'required|date_format:Y-m-d',
+            'flag' => 'required|in:settled,unsettled'
+
+        ],[
+            'flag.in' => 'flag must be settled or unsettled'
+        ]);
+        $date = $request->date;
+        $flag = $request->flag;
+        if($validator->fails()){
+            return $this->sendError('Validation Error.', $validator->errors());       
+        }
         $lotteries = DB::table('customer_lotteries')
                                 ->join('customer_lotteries_slave','customer_lotteries.id','=','customer_lotteries_slave.customer_lottery_id')
                                 ->where('customer_lotteries.customer_id',$customerId)
                                 ->select('customer_lotteries_slave.game_date as date')
                                 ->groupBy('customer_lotteries_slave.game_date')
-                                ->orderBy('customer_lotteries_slave.game_date','DESC')
-                                ->get();
+                                ->orderBy('customer_lotteries_slave.game_date','DESC');
+
+        if($date)
+            $lotteries = $lotteries->where('customer_lotteries_slave.game_date', $date);
+
+        $flagString = '';
+        if($flag == 'settled')
+            $flagString = 'Finished';
+        elseif($flag == 'unsettled')
+            $flagString = 'Inprocess';
+        if($flagString)
+            $lotteries = $lotteries->where('customer_lotteries_slave.status', $flagString);
+
+            
+        $lotteries= $lotteries->get();
         
         $x = 1;
         foreach($lotteries as $key=> $lotteriesVal){
             $lotteries[$key]->id = $x;
             $x++;
         }
-        $lotteries->map(function ($lottery) use($customerId)
+        $lotteries->map(function ($lottery) use($customerId, $flagString)
         {
             # code...
             $lottery->day_name = Carbon::createFromFormat('Y-m-d', $lottery->date)->format('d M, l');
@@ -222,14 +246,17 @@ class LotteryController extends BaseController
                             ->distinct('game_name')
                             ->select('brands.name as game_name','brands.id as game_id')
                             ->where('customer_lotteries.customer_id',$customerId)
-                            ->where('customer_lotteries_slave.game_date',$lottery->date)
-                            ->get();
+                            ->where('customer_lotteries_slave.game_date',$lottery->date);
+            if($flagString)
+                $games = $games->where('customer_lotteries_slave.status', $flagString);
+
+            $games= $games->get();   
             $y = 1;
             foreach($games as $key=> $gamesVal){
                 $games[$key]->id = $y;
                 $y++;
             }
-            $games->map(function($game) use($customerId, $lottery){
+            $games->map(function($game) use($customerId, $lottery, $flagString){
                 $lotteryDatas = Lottery::join('customer_lotteries_slave','customer_lotteries.id','=','customer_lotteries_slave.customer_lottery_id')
                                 ->where('customer_lotteries.customer_id',$customerId)
                                 ->where('customer_lotteries_slave.game_date',$lottery->date)
@@ -246,8 +273,11 @@ class LotteryController extends BaseController
                                     'customer_lotteries_slave.commission',
                                     'customer_lotteries_slave.net_amount',
                                     DB::raw("total_amount + (total_amount * customer_lotteries_slave.commission/100) AS net_amount"),
-                                )
-                                ->get()
+                                );
+                if($flagString)
+                    $lotteryDatas = $lotteryDatas->where('customer_lotteries_slave.status', $flagString);
+    
+                $lotteryDatas= $lotteryDatas->get()
                                 ->each(function ($row, $index) {
                                     $row->srno = $index + 1;
                                 });
