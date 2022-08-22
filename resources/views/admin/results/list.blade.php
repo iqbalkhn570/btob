@@ -12,8 +12,8 @@
           <div class="col-sm-6 text-right">
           @can('brand-create')
           <a class="btn btn-warning pull-right" href="{{route('result_export')}}"><i class="fa fa-download"></i> {{ __('messages.Export') }}</a>
-            <!--<a class="btn btn-primary pull-right" href="{{route('brand_import')}}"><i class="fa fa-upload"></i> {{ __('messages.Import') }}</a>
-            <a href="{{route($add_action)}}" class="btn btn-primary"><i class="fas fa-plus"></i> {{ __('messages.Add') }} {{ __('messages.'.$heading) }} </a>-->
+            <!--<a class="btn btn-primary pull-right" href="{{route('brand_import')}}"><i class="fa fa-upload"></i> {{ __('messages.Import') }}</a>-->
+            <a href="{{route($add_action)}}" class="btn btn-primary"><i class="fas fa-plus"></i> {{ __('messages.Add') }} {{ __('messages.'.$heading) }} </a>
             @endcan
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -156,7 +156,7 @@
                         @foreach ($data as $key =>$info)
                             <tr>
 <td>{{ $data->firstItem() + $key  }}</td>                            
-<td>{{ $info->title }}</td>
+<td>{{ $info->name }}</td>
 <td>{{ $info->result_date }}</td>
 <td>{{ $info->reference_number }}</td>
 <td>{{ $info->prize1 }}</td>
