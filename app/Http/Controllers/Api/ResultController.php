@@ -142,6 +142,6 @@ class ResultController extends BaseController
             $result->whereFetchingDateNew($date);
             
         $result = $result->get();    
-        return $this->sendResponse($result, 'result announce retrieved successfully.',['Date' => $date]);                   
+        return $this->sendResponse($result, 'result announce retrieved successfully.',['date' => $date]);                   
     }
 }
