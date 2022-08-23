@@ -198,13 +198,13 @@ class LotteryController extends BaseController
     public function show(Request $request, $customerId)
     {
         $validator = Validator::make($request->all(), [
-            'date' => 'required|date_format:Y-m-d',
+            'ref_id' => 'required',
             'flag' => 'required|in:settled,unsettled'
 
         ],[
             'flag.in' => 'flag must be settled or unsettled'
         ]);
-        $date = $request->date;
+        $referenceId = $request->ref_id;
         $flag = $request->flag;
         if($validator->fails()){
             return $this->sendError('Validation Error.', $validator->errors());       
@@ -216,8 +216,8 @@ class LotteryController extends BaseController
                                 ->groupBy('customer_lotteries_slave.game_date')
                                 ->orderBy('customer_lotteries_slave.game_date','DESC');
 
-        if($date)
-            $lotteries = $lotteries->where('customer_lotteries_slave.game_date', $date);
+        if($referenceId)
+            $lotteries = $lotteries->where('customer_lotteries.reference_number', $referenceId);
 
         $flagString = '';
         if($flag == 'settled')
@@ -235,7 +235,7 @@ class LotteryController extends BaseController
             $lotteries[$key]->id = $x;
             $x++;
         }
-        $lotteries->map(function ($lottery) use($customerId, $flagString)
+        $lotteries->map(function ($lottery) use($customerId, $flagString, $referenceId)
         {
             # code...
             $lottery->day_name = Carbon::createFromFormat('Y-m-d', $lottery->date)->format('d M, l');
@@ -247,6 +247,10 @@ class LotteryController extends BaseController
                             ->select('brands.name as game_name','brands.id as game_id')
                             ->where('customer_lotteries.customer_id',$customerId)
                             ->where('customer_lotteries_slave.game_date',$lottery->date);
+
+            if($referenceId)
+                $games = $games->where('customer_lotteries.reference_number', $referenceId);
+
             if($flagString)
                 $games = $games->where('customer_lotteries_slave.status', $flagString);
 
@@ -256,7 +260,7 @@ class LotteryController extends BaseController
                 $games[$key]->id = $y;
                 $y++;
             }
-            $games->map(function($game) use($customerId, $lottery, $flagString){
+            $games->map(function($game) use($customerId, $lottery, $flagString, $referenceId){
                 $lotteryDatas = Lottery::join('customer_lotteries_slave','customer_lotteries.id','=','customer_lotteries_slave.customer_lottery_id')
                                 ->where('customer_lotteries.customer_id',$customerId)
                                 ->where('customer_lotteries_slave.game_date',$lottery->date)
@@ -274,6 +278,9 @@ class LotteryController extends BaseController
                                     'customer_lotteries_slave.net_amount',
                                     DB::raw("total_amount + (total_amount * customer_lotteries_slave.commission/100) AS net_amount"),
                                 );
+                if($referenceId)
+                    $lotteryDatas = $lotteryDatas->where('customer_lotteries.reference_number', $referenceId);
+
                 if($flagString)
                     $lotteryDatas = $lotteryDatas->where('customer_lotteries_slave.status', $flagString);
     
@@ -502,23 +509,31 @@ class LotteryController extends BaseController
         if($validator->fails()){
             return $this->sendError('Validation Error.', $validator->errors());       
         }
-        $lotteries = DB::table('customer_lotteries')
-                                ->join('customer_lotteries_slave','customer_lotteries.id','=','customer_lotteries_slave.customer_lottery_id')
-                                ->where('customer_lotteries.customer_id',$customerId)
-                                ->select('customer_lotteries.reference_number as reference_id')
-                                ->groupBy('reference_number');
-
+        if(isset($request->limit)){
+            $lotteries = DB::table('customer_lotteries')
+                ->join('customer_lotteries_slave','customer_lotteries.id','=','customer_lotteries_slave.customer_lottery_id')
+                ->where('customer_lotteries.customer_id',$customerId)
+                ->select('customer_lotteries.reference_number as id','customer_lotteries.reference_number as text')
+                ->groupBy('customer_lotteries.reference_number');
+        }else{
+            $lotteries = DB::table('customer_lotteries')
+                ->join('customer_lotteries_slave','customer_lotteries.id','=','customer_lotteries_slave.customer_lottery_id')
+                ->where('customer_lotteries.customer_id',$customerId)
+                ->select('customer_lotteries.reference_number as id','customer_lotteries.reference_number as text')
+                ->groupBy('reference_number');
+        }
         $flagString = '';
         if($flag == 'settled')
             $flagString = 'Finished';
         elseif($flag == 'unsettled')
             $flagString = 'Inprocess';
         if($flagString)
-            $lotteries = $lotteries->where('customer_lotteries_slave.status', $flagString);
-
-            
-        $lotteries= $lotteries->get();
-        
+        $lotteries = $lotteries->where('customer_lotteries_slave.status', $flagString);
+        if(isset($request->limit)){
+            $lotteries= $lotteries->latest('customer_lotteries.id')->first();
+        }else{
+            $lotteries= $lotteries->get();
+        }
         return $this->sendResponse($lotteries, 'Lotteries retrieved successfully.');
     }
 }
