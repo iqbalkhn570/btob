@@ -64,5 +64,6 @@ Route::post("lottery-delete", [LotteryController::class, "destroy"]);
 Route::match(['get', 'post'],"/lottery-slave-list", [LotteryController::class, "lotterySlaveList"]);
 Route::post("lottery-change-status", [LotteryController::class, "changeStatus"]);
 Route::get("lottery-change-status/{refid}", [LotteryController::class, "changeStatus"]);
+Route::get("lottery-refid-show/{customer_id}", [LotteryController::class, "showRefId"]);
 
 Route::match(['get', 'post'],"/result-announce", [ResultController::class, "announce"]);
