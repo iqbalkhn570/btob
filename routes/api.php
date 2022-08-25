@@ -67,3 +67,6 @@ Route::get("lottery-change-status/{refid}", [LotteryController::class, "changeSt
 Route::get("lottery-refid-show/{customer_id}", [LotteryController::class, "showRefId"]);
 
 Route::match(['get', 'post'],"/result-announce", [ResultController::class, "announce"]);
+
+Route::post("indentify-user", [AuthController::class, "identifyUser"]);
+

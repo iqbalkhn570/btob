@@ -5,6 +5,9 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
+use Spatie\Permission\Models\Role;
 
 class AuthController extends Controller
 {
@@ -66,5 +69,37 @@ class AuthController extends Controller
             "status" => true,
             "message" => "User logged out successfully"
         ]);
+    }
+    public function identifyUser(Request $request)
+    {
+        # code...
+        $validator = Validator::make($request->all(), [
+            'customer_id' => 'required',
+            'enterprise_id' => 'required',
+
+        ]);
+
+        if($validator->fails())
+            return (new BaseController)->sendError('Validation Error.', $validator->errors());
+
+        $customerId = $request->customer_id;
+        $enterpriseId = $request->enterprise_id;
+        $user = User::whereCustomerId($customerId)->whereEnterpriseId($enterpriseId)->first();
+        
+        //save user dump data
+        if (!$user){
+            $user = User::create([
+                'customer_id' => $customerId,
+                'enterprise_id' => $enterpriseId,
+                'name'          => 'Customer '. $customerId,
+                'email'          => 'Customer'. $customerId.'@gmail.com',
+                'password'          => 'Customer@123',
+                'role_id'          => Role::first()->id,
+                'created_by'          => @Auth::id(),
+                
+            ]);
+        }
+        return (new BaseController)->sendResponse($user, 'indentifying user successfully');
+
     }
 }

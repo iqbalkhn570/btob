@@ -29,7 +29,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         //'name', 'email', 'password','google2fa_secret'
-        'name', 'email', 'password', 'role_id', 'created_by'
+        'name', 'email', 'password', 'role_id', 'created_by','customer_id','enterprise_id'
     ];
 
     /**
@@ -49,6 +49,8 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'created_at' => 'date:Y-m-d H:i:s',
+        'updated_at' => 'date:Y-m-d H:i:s',
     ];
     //protected function google2faSecret(): Attribute
     //{
