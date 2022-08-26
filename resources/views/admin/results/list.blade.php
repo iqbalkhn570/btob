@@ -99,8 +99,8 @@
                             <th>@sortablelink('consolation10',__('messages.Consolation10'))</th>
                             <!--<th>@sortablelink('created_at', __('messages.Created Date'))</th>
                             <th>@sortablelink('updated_at', __('messages.Updated Date'))</th>
-                            <th>@sortablelink('created_at','Created Date')</th>
-                            <th>{{ __('messages.Action') }}</th>-->
+                            <th>@sortablelink('created_at','Created Date')</th>-->
+                            <th>{{ __('messages.Action') }}</th>
                             </tr>
                             <tr>
                             <form>
@@ -185,13 +185,13 @@
 <!--<td>{{ $info->created_at }}</td>
                                 <td>{{ $info->updated_at }}</td>
                             <td>{{date('d-M  Y',strtotime($info->created_at))}}</td>-->
-                           <!-- <td>
+                           <td>
                             <div class="btn-group">
                             @can('brand-edit')
                                 <a title="{{ __('messages.Edit') }}" class="btn btn-sm btn-primary" href="{{route($edit_action,['id'=>$info->id])}}"><i class="fa fas fa-edit"></i></a>
                            @endcan
                                
-                                <a onclick="return confirm('{{ __('messages.Are You Sure, You Want To change status') }} {{$info->name}} ?');" class="btn btn-sm {{ ($info->status == 'enabled') ? 'btn-success' :  'btn-danger' }}  changestatus" href="{{ route($status_action, ['id'=>$info->id , 'status' => $info->status ]) }}"  title="{{ ($info->status == 'enabled') ? 'Disable' :  'Enable' }}" >
+                               <!-- <a onclick="return confirm('{{ __('messages.Are You Sure, You Want To change status') }} {{$info->name}} ?');" class="btn btn-sm {{ ($info->status == 'enabled') ? 'btn-success' :  'btn-danger' }}  changestatus" href="{{ route($status_action, ['id'=>$info->id , 'status' => $info->status ]) }}"  title="{{ ($info->status == 'enabled') ? 'Disable' :  'Enable' }}" >
                                 <i class="fa fas fa-check"></i>
                                 </a>
                                 @can('brand-delete')
@@ -204,9 +204,9 @@
                                 @if($info->deleted_at!="")			
                                 <a onclick="return confirm('Are You Sure, You Want To Restore {{$info->name}} ?');" class="btn btn-sm btn-danger" href="{{route('admin_brand_restore', ['id'=>$info->id] )}}">Restore</a>
                                 @endif
-                                @endif
+                                @endif-->
                             </div>
-                            </td>-->
+                            </td>
                             </tr>
                         @endforeach
                          @else
