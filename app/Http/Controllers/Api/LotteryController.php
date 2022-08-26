@@ -58,7 +58,9 @@ class LotteryController extends BaseController
             $dates = $request->dates;
             $games = $request->games;
             $datas = $request->datas;
-            $referenceNum = Str::uuid()->toString().'-'.Carbon::now()->year.'-REF';
+            $LastNumber = DB::table('customer_lotteries')->max('id')+1;
+            $referenceNum = 'BRN00'.$LastNumber;
+            //$referenceNum = Str::uuid()->toString().'-'.Carbon::now()->year.'-REF';
             $company = Company::find($companyId);
             //
              // we have to write a code for genrating numbers for lottery 
@@ -198,13 +200,13 @@ class LotteryController extends BaseController
     public function show(Request $request, $customerId)
     {
         $validator = Validator::make($request->all(), [
-            'ref_id' => 'required',
+            'date' => 'required|date_format:Y-m-d',
             'flag' => 'required|in:settled,unsettled'
 
         ],[
             'flag.in' => 'flag must be settled or unsettled'
         ]);
-        $referenceId = $request->ref_id;
+        $date = $request->date;
         $flag = $request->flag;
         if($validator->fails()){
             return $this->sendError('Validation Error.', $validator->errors());       
@@ -216,8 +218,8 @@ class LotteryController extends BaseController
                                 ->groupBy('customer_lotteries_slave.game_date')
                                 ->orderBy('customer_lotteries_slave.game_date','DESC');
 
-        if($referenceId)
-            $lotteries = $lotteries->where('customer_lotteries.reference_number', $referenceId);
+        if($date)
+            $lotteries = $lotteries->where('customer_lotteries_slave.game_date', $date);
 
         $flagString = '';
         if($flag == 'settled')
@@ -235,7 +237,7 @@ class LotteryController extends BaseController
             $lotteries[$key]->id = $x;
             $x++;
         }
-        $lotteries->map(function ($lottery) use($customerId, $flagString, $referenceId)
+        $lotteries->map(function ($lottery) use($customerId, $flagString)
         {
             # code...
             $lottery->day_name = Carbon::createFromFormat('Y-m-d', $lottery->date)->format('d M, l');
@@ -247,10 +249,6 @@ class LotteryController extends BaseController
                             ->select('brands.name as game_name','brands.id as game_id')
                             ->where('customer_lotteries.customer_id',$customerId)
                             ->where('customer_lotteries_slave.game_date',$lottery->date);
-
-            if($referenceId)
-                $games = $games->where('customer_lotteries.reference_number', $referenceId);
-
             if($flagString)
                 $games = $games->where('customer_lotteries_slave.status', $flagString);
 
@@ -260,7 +258,7 @@ class LotteryController extends BaseController
                 $games[$key]->id = $y;
                 $y++;
             }
-            $games->map(function($game) use($customerId, $lottery, $flagString, $referenceId){
+            $games->map(function($game) use($customerId, $lottery, $flagString){
                 $lotteryDatas = Lottery::join('customer_lotteries_slave','customer_lotteries.id','=','customer_lotteries_slave.customer_lottery_id')
                                 ->where('customer_lotteries.customer_id',$customerId)
                                 ->where('customer_lotteries_slave.game_date',$lottery->date)
@@ -278,9 +276,6 @@ class LotteryController extends BaseController
                                     'customer_lotteries_slave.net_amount',
                                     DB::raw("total_amount + (total_amount * customer_lotteries_slave.commission/100) AS net_amount"),
                                 );
-                if($referenceId)
-                    $lotteryDatas = $lotteryDatas->where('customer_lotteries.reference_number', $referenceId);
-
                 if($flagString)
                     $lotteryDatas = $lotteryDatas->where('customer_lotteries_slave.status', $flagString);
     
@@ -497,43 +492,4 @@ class LotteryController extends BaseController
        
     }
     
-    public function showRefId(Request $request, $customerId)
-    {
-        $validator = Validator::make($request->all(), [
-            'flag' => 'required|in:settled,unsettled'
-
-        ],[
-            'flag.in' => 'flag must be settled or unsettled'
-        ]);
-        $flag = $request->flag;
-        if($validator->fails()){
-            return $this->sendError('Validation Error.', $validator->errors());       
-        }
-        if(isset($request->limit)){
-            $lotteries = DB::table('customer_lotteries')
-                ->join('customer_lotteries_slave','customer_lotteries.id','=','customer_lotteries_slave.customer_lottery_id')
-                ->where('customer_lotteries.customer_id',$customerId)
-                ->select('customer_lotteries.reference_number as id','customer_lotteries.reference_number as text')
-                ->groupBy('customer_lotteries.reference_number');
-        }else{
-            $lotteries = DB::table('customer_lotteries')
-                ->join('customer_lotteries_slave','customer_lotteries.id','=','customer_lotteries_slave.customer_lottery_id')
-                ->where('customer_lotteries.customer_id',$customerId)
-                ->select('customer_lotteries.reference_number as id','customer_lotteries.reference_number as text')
-                ->groupBy('reference_number');
-        }
-        $flagString = '';
-        if($flag == 'settled')
-            $flagString = 'Finished';
-        elseif($flag == 'unsettled')
-            $flagString = 'Inprocess';
-        if($flagString)
-        $lotteries = $lotteries->where('customer_lotteries_slave.status', $flagString);
-        if(isset($request->limit)){
-            $lotteries= $lotteries->latest('customer_lotteries.id')->first();
-        }else{
-            $lotteries= $lotteries->get();
-        }
-        return $this->sendResponse($lotteries, 'Lotteries retrieved successfully.');
-    }
 }
