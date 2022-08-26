@@ -38,7 +38,8 @@ class LotteryController extends BaseController
      */
     public function store(Request $request)
     {
-        
+        $value = 001100;
+        dd(gettype($value));
         $validator = Validator::make($request->all(), [
             'dates' => 'required|array',
             'games' => 'required|array',
@@ -490,6 +491,37 @@ class LotteryController extends BaseController
             return $this->sendError('Something Wrong');  
         }
        
+    }
+    public function showRefId(Request $request, $customerId)
+    {
+        $validator = Validator::make($request->all(), [
+            'flag' => 'required|in:settled,unsettled'
+
+        ],[
+            'flag.in' => 'flag must be settled or unsettled'
+        ]);
+        $flag = $request->flag;
+        if($validator->fails()){
+            return $this->sendError('Validation Error.', $validator->errors());       
+        }
+        $lotteries = DB::table('customer_lotteries')
+                                ->join('customer_lotteries_slave','customer_lotteries.id','=','customer_lotteries_slave.customer_lottery_id')
+                                ->where('customer_lotteries.customer_id',$customerId)
+                                ->select('customer_lotteries.reference_number as reference_id')
+                                ->groupBy('reference_number');
+
+        $flagString = '';
+        if($flag == 'settled')
+            $flagString = 'Finished';
+        elseif($flag == 'unsettled')
+            $flagString = 'Inprocess';
+        if($flagString)
+            $lotteries = $lotteries->where('customer_lotteries_slave.status', $flagString);
+
+
+        $lotteries= $lotteries->get();
+
+        return $this->sendResponse($lotteries, 'Lotteries retrieved successfully.');
     }
     
 }
