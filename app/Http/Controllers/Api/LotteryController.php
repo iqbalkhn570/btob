@@ -199,7 +199,7 @@ class LotteryController extends BaseController
     public function show(Request $request, $customerId)
     {
         $validator = Validator::make($request->all(), [
-            'date' => 'required|date_format:Y-m-d',
+            //'date' => 'required|date_format:Y-m-d',
             'flag' => 'required|in:settled,unsettled'
 
         ],[
