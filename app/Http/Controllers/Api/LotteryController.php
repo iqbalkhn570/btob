@@ -38,7 +38,6 @@ class LotteryController extends BaseController
      */
     public function store(Request $request)
     {
-        
         $validator = Validator::make($request->all(), [
             'dates' => 'required|array',
             'games' => 'required|array',
