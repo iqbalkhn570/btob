@@ -39,7 +39,7 @@ class LotteryController extends BaseController
     public function store(Request $request)
     {
         $value = "001100";
-        dd((string)(integer)(string)$value);
+        //dd((string)(integer)(string)$value);
         $validator = Validator::make($request->all(), [
             'dates' => 'required|array',
             'games' => 'required|array',
