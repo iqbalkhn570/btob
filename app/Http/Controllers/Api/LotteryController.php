@@ -38,8 +38,8 @@ class LotteryController extends BaseController
      */
     public function store(Request $request)
     {
-        // $value = 001100;
-        // dd(gettype($value));
+        $value = "001100";
+        dd((string)(integer)(string)$value);
         $validator = Validator::make($request->all(), [
             'dates' => 'required|array',
             'games' => 'required|array',
@@ -504,12 +504,20 @@ class LotteryController extends BaseController
         if($validator->fails()){
             return $this->sendError('Validation Error.', $validator->errors());       
         }
-        $lotteries = DB::table('customer_lotteries')
-                                ->join('customer_lotteries_slave','customer_lotteries.id','=','customer_lotteries_slave.customer_lottery_id')
-                                ->where('customer_lotteries.customer_id',$customerId)
-                                ->select('customer_lotteries.reference_number as reference_id')
-                                ->groupBy('reference_number');
-
+    
+        if(isset($request->limit)){
+            $lotteries = DB::table('customer_lotteries')
+                ->join('customer_lotteries_slave','customer_lotteries.id','=','customer_lotteries_slave.customer_lottery_id')
+                ->where('customer_lotteries.customer_id',$customerId)
+                ->select('customer_lotteries.reference_number as id','customer_lotteries.reference_number as text')
+                ->groupBy('customer_lotteries.reference_number');
+        }else{
+            $lotteries = DB::table('customer_lotteries')
+                ->join('customer_lotteries_slave','customer_lotteries.id','=','customer_lotteries_slave.customer_lottery_id')
+                ->where('customer_lotteries.customer_id',$customerId)
+                ->select('customer_lotteries.reference_number as id','customer_lotteries.reference_number as text')
+                ->groupBy('reference_number');
+        }
         $flagString = '';
         if($flag == 'settled')
             $flagString = 'Finished';
@@ -518,9 +526,11 @@ class LotteryController extends BaseController
         if($flagString)
             $lotteries = $lotteries->where('customer_lotteries_slave.status', $flagString);
 
-
-        $lotteries= $lotteries->get();
-
+        if(isset($request->limit)){
+            $lotteries= $lotteries->latest('customer_lotteries.id')->first();
+        }else{
+            $lotteries= $lotteries->get();
+        }
         return $this->sendResponse($lotteries, 'Lotteries retrieved successfully.');
     }
     
