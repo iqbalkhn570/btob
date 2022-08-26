@@ -53,7 +53,7 @@
                     <div class="col-sm-2 form-group">
                     <label class=" control-label">Result Date*</label>
                     <div class="input-group date" id="reservationdate" data-target-input="nearest">
-<input type="text" name="fetching_date" value="{{ app('request')->input('fetching_date') }}" class="form-control datetimepicker-input" data-target="#reservationdate" placeholder="Result Date" />
+<input type="text" name="fetching_date" value="{{ $data->fetching_date }}" class="form-control datetimepicker-input" data-target="#reservationdate" placeholder="Result Date" />
 <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
 <div class="input-group-text"><i class="fa fa-calendar"></i></div>
 </div></div>
@@ -63,7 +63,7 @@
                       <select class="form-control select2" name="brand_id">
                               <option value=''>Select Game</option>
                                 @foreach($brands as $brand)
-                                  <option value="{{$brand->id}}" @if($brand->id ==  app('request')->input('brand_id')) selected="selected" @endif >{{$brand->name}}</option>
+                                  <option value="{{$brand->id}}" @if($brand->id ==  $data->brand_id) selected="selected" @endif >{{$brand->name}}</option>
                                 @endforeach
                                 </select>
                       </div>

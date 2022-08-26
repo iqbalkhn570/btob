@@ -211,7 +211,10 @@ $query=$query->join('brands', 'results.brand_id', '=', 'brands.id');
     {
         $data = new result;
         $data = $data->findOrFail($request->id);
-        return view('admin.'.$this->folder.'.add')->with(array('data'=>$data,'heading'=>$this->heading,'search_action'=>$this->search_action));
+        $brands = Brand::Select('*');
+        $brands = $brands->Where('status','enabled');
+        $brands = $brands->orderBy('id', 'ASC')->paginate(0);
+        return view('admin.'.$this->folder.'.add')->with(array('data'=>$data,'brands'=>$brands,'heading'=>$this->heading,'search_action'=>$this->search_action));
     }
 
     /**
@@ -225,14 +228,81 @@ $query=$query->join('brands', 'results.brand_id', '=', 'brands.id');
     {
         if($request->isMethod('post')) {
             $validatedData = Validator::make($request->all(),[
-                'name' => 'required|max:255|unique:results,name,' . $request->id,
+                //'date_from' => 'required',
+                'brand_id' => 'required',
+
+                'fetching_date' =>  [
+                    'required', 
+                    Rule::unique('results')
+                    ->ignore($request->id)
+                           ->where('brand_id', $request->brand_id)
+                ],
+                'reference_number' => 'required',
+                'prize1' => 'required|numeric',
+                'prize2' => 'required|numeric',
+                'prize3' => 'required|numeric',
+                'special1' => 'required|numeric',
+                'special2' => 'required|numeric',
+                'special3' => 'required|numeric',
+                'special4' => 'required|numeric',
+                'special5' => 'required|numeric',
+                'special6' => 'required|numeric',
+                'special7' => 'required|numeric',
+                'special8' => 'required|numeric',
+                'special9' => 'required|numeric',
+                'special10' => 'required|numeric',
+                'consolation1' => 'required|numeric',
+                'consolation2' => 'required|numeric',
+                'consolation3' => 'required|numeric',
+                'consolation4' => 'required|numeric',
+                'consolation5' => 'required|numeric',
+                'consolation6' => 'required|numeric',
+                'consolation7' => 'required|numeric',
+                'consolation8' => 'required|numeric',
+                'consolation9' => 'required|numeric',
+                'consolation10' => 'required|numeric'
+            ],
+            [
+                'fetching_date.unique' => 'Data already exist for selected date and game.',
             ]);
 
             if (!$validatedData->fails() )
             { 
                 $data =  result::find($request->id);
-                $data->name = $request->name;
-                $data->slug = Str::slug($request->name,'-');
+                $date=date_create($request->fetching_date);
+                $result_date=date_format($date,"D d-m-Y");
+                $fetching_date_new=date_format($date,"Y-m-d");
+                
+             
+                $data->result_date = $result_date;
+                $data->fetching_date_new = $fetching_date_new;
+                $data->fetching_date=$request->fetching_date;
+                $data->brand_id = $request->brand_id;
+                $data->product_id = 4;
+                $data->reference_number = $request->reference_number;
+                $data->prize1 = $request->prize1;
+                $data->prize2 = $request->prize2;
+                $data->prize3 = $request->prize3;
+                $data->special1 = $request->special1;
+                $data->special2 = $request->special2;
+                $data->special3 = $request->special3;
+                $data->special4 = $request->special4;
+                $data->special5 = $request->special5;
+                $data->special6 = $request->special6;
+                $data->special7 = $request->special7;
+                $data->special8 = $request->special8;
+                $data->special9 = $request->special9;
+                $data->special10 = $request->special10;
+                $data->consolation1 = $request->consolation1;
+                $data->consolation2 = $request->consolation2;
+                $data->consolation3 = $request->consolation3;
+                $data->consolation4 = $request->consolation4;
+                $data->consolation5 = $request->consolation5;
+                $data->consolation6 = $request->consolation6;
+                $data->consolation7 = $request->consolation7;
+                $data->consolation8 = $request->consolation8;
+                $data->consolation9 = $request->consolation9;
+                $data->consolation10 = $request->consolation10;
 				
                 if($data->save()){
                     $request->session()->flash('message', $this->heading.' updated successfully');
