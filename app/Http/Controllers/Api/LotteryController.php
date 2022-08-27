@@ -71,8 +71,16 @@ class LotteryController extends BaseController
                 $lotteryData['customer_id'] = $customerId;
                 $lotteryData['company_id'] = $companyId;
                 $lotteryData['number_pattern'] = @$value['number'];
-                $lotteryData['big_bet_amount'] = @$value['big_bet'];
-                $lotteryData['small_bet_amount'] = @$value['small_bet'];
+                
+                $bigBet = @$value['big_bet'];
+                if(gettype($bigBet) == 'string')
+                    $bigBet = ltrim($bigBet, 0);
+                $lotteryData['big_bet_amount'] = $bigBet;
+
+                $smallBet = @$value['small_bet'];
+                if(gettype($smallBet) == 'string')
+                    $smallBet = ltrim($smallBet, 0);
+                $lotteryData['small_bet_amount'] = $smallBet;
 
                 $boxType = '2';
                 if( @$value['box'] == 'on' )
@@ -130,14 +138,14 @@ class LotteryController extends BaseController
                                 //die('khan');
                                 $slaveData['lottery_number'] = $row;
                                 $slaveData['commission'] = $company->commission;
-                                $slaveData['net_amount'] = round ($slaveData['amount']+($slaveData['amount']*$company->commission/100), 2) ;
+                                $slaveData['net_amount'] = round ($slaveData['amount'] - ($slaveData['amount']*$company->commission/100), 2) ;
                                 DB::table('customer_lotteries_slave')->insert($slaveData);
                             }
                         }else{
                             $slaveData['lottery_number'] =@$value['number'];
                             $slaveData['amount'] = @$value['amount'];
                             $slaveData['commission'] = $company->commission;
-                            $slaveData['net_amount'] = $slaveData['amount']+($slaveData['amount']*$company->commission/100);
+                            $slaveData['net_amount'] = $slaveData['amount'] - ($slaveData['amount']*$company->commission/100);
                             DB::table('customer_lotteries_slave')->insert($slaveData);
                         }
                        // }
@@ -270,15 +278,15 @@ class LotteryController extends BaseController
                                 ->distinct('customer_lotteries_slave.lottery_number')
                                 ->select(
                                     'customer_lotteries_slave.id',
-                                    'customer_lotteries.big_bet_amount',
-                                    'customer_lotteries.small_bet_amount',
+                                    DB::raw(" REPLACE(LTRIM(REPLACE(big_bet_amount,'0',' ')),' ','0') AS big_bet_amount"),
+                                    DB::raw(" REPLACE(LTRIM(REPLACE(small_bet_amount,'0',' ')),' ','0') AS small_bet_amount"),
                                     'customer_lotteries.bet_type',
                                     'customer_lotteries_slave.lottery_number',
                                     'customer_lotteries_slave.amount',
                                     'customer_lotteries_slave.status',
                                     'customer_lotteries_slave.commission',
                                     'customer_lotteries_slave.net_amount',
-                                    DB::raw("total_amount + (total_amount * customer_lotteries_slave.commission/100) AS net_amount"),
+                                    DB::raw("total_amount - (total_amount * customer_lotteries_slave.commission/100) AS net_amount"),
                                 );
                 if($flagString)
                     $lotteryDatas = $lotteryDatas->where('customer_lotteries_slave.status', $flagString);
@@ -379,12 +387,12 @@ class LotteryController extends BaseController
                                 ->select(
                                     'customer_lotteries.id',
                                     'customer_lotteries.number_pattern',
-                                    'customer_lotteries.big_bet_amount',
-                                    'customer_lotteries.small_bet_amount',
+                                    DB::raw(" REPLACE(LTRIM(REPLACE(big_bet_amount,'0',' ')),' ','0') AS big_bet_amount"),
+                                    DB::raw(" REPLACE(LTRIM(REPLACE(small_bet_amount,'0',' ')),' ','0') AS small_bet_amount"),
                                     'customer_lotteries.bet_type',
                                     'customer_lotteries.total_amount',
                                     'companies.commission',
-                                    DB::raw("total_amount + (total_amount * companies.commission/100) AS net_amount"),
+                                    DB::raw("total_amount - (total_amount * companies.commission/100) AS net_amount"),
                                 );
                 if($referenceNumber)
                     $lotteryDatas = $lotteryDatas->where('customer_lotteries.reference_number',$referenceNumber);
